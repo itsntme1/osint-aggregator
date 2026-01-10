@@ -19,9 +19,8 @@ def landing():
 
 @app.route("/search")
 def search():
-    search_items = session["search_items"]
-    print(search_items)
-    return render_template("search.html", search_items=search_items)
+
+    return render_template("search.html", search_items=session["search_items"])
 
 
 
