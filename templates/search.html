@@ -1,5 +1,25 @@
 {% extends "layout.html" %}
 
 {% block body %}
-    <p>form submited</p>
+    {% for item in search_items[0] %}
+        <p>{{ item }}</p>
+    {% endfor %}
+
+    {% for item in search_items[1] %}
+        <p>{{ item }}</p>
+    {% endfor %}
+    
+    <div class="position-absolute top-50 start-50 translate-middle">
+        <div class="d-flex flex-wrap gap-3 justify-content-center">
+            <div class="card fixed-card">Card</div>
+            <div class="card fixed-card">Card</div>
+            <div class="card fixed-card">Card</div>
+            <div class="card fixed-card">Card</div>
+            <div class="card fixed-card">Card</div>
+            <div class="card fixed-card">Card</div>
+            <div class="card fixed-card">Card</div>
+            <div class="card fixed-card">Card</div>
+            <div class="card fixed-card">Card</div>
+        </div>
+    </div>
 {% endblock %}
