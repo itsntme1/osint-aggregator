@@ -1,38 +1,25 @@
 {% extends "layout.html" %}
 
 {% block body %}
-    {% for email in search_items["emails"] %}
-        <p>email: {{ email }}</p>
-    {% endfor %}
+<script src="../static/script.js"></script>
+{% for email in search_items["emails"] %}
+<p>email: {{ email }}</p>
+{% endfor %}
 
-    {% for username in search_items["usernames"] %}
-        <p>username: {{ username }}</p>
-    {% endfor %}
+{% for username in search_items["usernames"] %}
+<p>username: {{ username }}</p>
+{% endfor %}
 
-    {{ data }}
-    
-    <div class="position-absolute top-50 start-50 translate-middle">
-        <div class="d-flex flex-wrap gap-3 justify-content-center">
-            <div class="card fixed-card">
-                <div class="card-header bg-info">IPinfo.io</div>
-                <div class="card-body" id="ip_info">Loading</div>
-                <div class="card-footer"><button class="btn btn-danger">Reload</button></div>
-            </div>
+{{ data }}
+<div class="loader"></div>
+<div class="centered">
+    <div class="d-flex flex-wrap gap-3 justify-content-center">
+        <div class="card fixed-card data-div">
+            <div class="card-header bg-info"><h5 class="card-title">IPinfo.io</h5></div>
+            <div class="card-body data-display" style="height: 300px; position: relative;"><div class="centered"><div class="loader"></div></div></div>
+            <div class="card-footer"><button class="btn btn-danger data-reload")">Reload</button></div>
         </div>
     </div>
+</div>
 
-    <script>
-        function loadData(endpoint, element, format){
-            fetch(endpoint)
-                .then(d => d.json())
-                .then(data => {
-                    document.getElementById(element).innerHTML = format(data);
-                })
-                .catch(() => {
-                   document.getElementById(element).innerHTML = "Failed to load"; 
-                });
-        }
-
-        loadData("/api/ip_info", "ip_info", d => `${d.ip} ${d.city}`)
-    </script>
 {% endblock %}

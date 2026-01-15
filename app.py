@@ -24,10 +24,8 @@ def search():
 
 @app.route("/api/ip_info")
 def ip_info():
-    # data = query_ip_info(request.remote_addr)
+    # data = query_ip_info(request.remote_addr, ip_info_key)
     data = query_ip_info("90.177.145.18", ip_info_key)
-
-    print(data)
 
     return data
 
