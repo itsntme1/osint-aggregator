@@ -1,23 +1,31 @@
+
 {% from 'macros.html' import card %}
 
 {% extends "layout.html" %}
 
+{% block head %}
+    {{ super() }}
+
+    <script src="../static/script.js" type="module"></script>
+
+{% endblock head %}
+
 {% block body %}
-<script src="../static/script.js"></script>
-{% for email in search_items["emails"] %}
-<p>email: {{ email }}</p>
-{% endfor %}
 
-{% for username in search_items["usernames"] %}
-<p>username: {{ username }}</p>
-{% endfor %}
+    {% for email in search_items["emails"] %}
+        <p>email: {{ email }}</p>
+    {% endfor %}
+
+    {% for username in search_items["usernames"] %}
+        <p>username: {{ username }}</p>
+    {% endfor %}
 
 
-<div class="centered">
-    <div class="d-flex flex-wrap gap-3 justify-content-center">
-        {{ card("IPinfo.io", "/api/ip_info") }}
+    <div class="centered">
+        <div class="d-flex flex-wrap gap-3 justify-content-center">
+            {{ card("IPinfo.io", "/api/ip_info", "ipInfo") }}
+        </div>
     </div>
-</div>
 
 
 {% endblock body %}
