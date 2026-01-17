@@ -2,7 +2,7 @@
 {% macro card(title, endpoint, schema) %}
 <div class="card fixed-card" data-title="{{ title }}" data-endpoint="{{ endpoint }}" data-schema="{{ schema }}">
     <div class="card-header bg-info"><p class="m-0 fs-5 fw-semibold">{{ title }}</p></div>
-    <div class="card-body" data-display style="height: 300px; position: relative;"><div class="centered"><div class="loader"></div></div></div>
+    <div class="card-body p-0" data-display style="height: 300px;position: relative;"><div class="centered"><div class="loader"></div></div></div>
     <div class="card-footer"><button class="btn btn-danger" data-reload="")">Reload</button></div>
 </div>
 {% endmacro %}

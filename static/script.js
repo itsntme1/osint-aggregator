@@ -1,5 +1,5 @@
 
-import { schemaTable, ipInfo } from './schemas.js';
+import { schemaTable } from './schemas.js';
 
 async function loadData(element) {
     try {
@@ -8,7 +8,7 @@ async function loadData(element) {
         
         const response = await fetch(endpoint);
         const data = await response.json();
-
+        
         element.innerHTML = await schemaTable[schema](data);
     }
     catch {
@@ -32,8 +32,6 @@ function initialLoadData() {
 
 function assignReloadData() {
     document.querySelectorAll("[data-reload]").forEach(element => {
-        console.log(element)
-
         element.addEventListener("click", () => {
             reloadData(element);
         });

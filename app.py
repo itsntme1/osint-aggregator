@@ -10,7 +10,7 @@ app.secret_key = session_key
 def landing():
 
     if request.method == "POST":
-        session["search_items"] = format_search_input(request.form.get("search_input"))
+        session['search_items'] = format_search_input(request.form.get("search_input"))
 
         return redirect("/search")
 
@@ -26,6 +26,24 @@ def search():
 def ip_info():
     # data = query_ip_info(request.remote_addr, ip_info_key)
     data = query_ip_info("90.177.145.18", ip_info_key)
+
+    session['coordinates'] = data['loc'].split(',')
+
+    return data
+
+@app.route("/api/mapy_cz")
+def mapy_cz():
+
+    if not session['coordinates']:
+        data = query_ip_info("90.177.145.18", ip_info_key)
+
+        session['coordinates'] = data['loc'].split(',')
+
+    data = {
+        'longtitude': session['coordinates'][1],
+        'latitude': session['coordinates'][0],
+        'token': mapy_cz_key
+    }
 
     print(data)
 
