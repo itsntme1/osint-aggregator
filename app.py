@@ -33,11 +33,9 @@ def ip_info():
 
 @app.route("/api/mapy_cz")
 def mapy_cz():
+    data_ip = query_ip_info("90.177.145.18", ip_info_key)
 
-    if not session['coordinates']:
-        data = query_ip_info("90.177.145.18", ip_info_key)
-
-        session['coordinates'] = data['loc'].split(',')
+    session['coordinates'] = data_ip['loc'].split(',')
 
     data = {
         'longtitude': session['coordinates'][1],
@@ -45,7 +43,31 @@ def mapy_cz():
         'token': mapy_cz_key
     }
 
-    print(data)
+    return data
+
+@app.route("/api/http_headers")
+def http_headers():
+    # Format data
+    data = {
+        'user_agent': request.headers.get('User-Agent'),
+        'os': request.headers.get('Sec-Ch-Ua-Platform')[1:-1],
+        'language': request.headers.get('Accept-Language')[:2]
+    }
+
+    return data
+
+@app.route("/api/disify")
+def email():
+    data = {}
+
+    for email in session['search_items']['emails']:
+        data_disify = query_disify(email)
+
+        data[email] = {
+            'domain': data_disify['domain'],
+            'valid': data_disify['format'],
+            'disposable': data_disify['disposable']
+        }
 
     return data
 

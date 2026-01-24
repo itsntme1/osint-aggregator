@@ -17,7 +17,7 @@ def format_search_input(search_input: str):
 
     return search_items
 
-def query_api(endpoint: str, headers, timeout: int=1):
+def query_api(endpoint: str, headers=None, timeout: int=1):
     response = None
 
     try:
@@ -34,5 +34,8 @@ def query_api(endpoint: str, headers, timeout: int=1):
     
     return response
 
-def query_ip_info(ip, token):
+def query_ip_info(ip, token: str):
     return query_api(f"https://ipinfo.io/{ip}", {"Authorization": f"Bearer {token}"}).json()
+
+def query_disify(email: str):
+    return query_api(f"https://disify.com/api/email/{email}").json()

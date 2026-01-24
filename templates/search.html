@@ -6,27 +6,17 @@
 {% block head %}
     {{ super() }}
 
-    <script src="../static/script.js" type="module"></script>
-
+    <script src="/static/script.js" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 {% endblock head %}
 
 {% block body %}
-
-    {% for email in search_items["emails"] %}
-        <p>email: {{ email }}</p>
-    {% endfor %}
-
-    {% for username in search_items["usernames"] %}
-        <p>username: {{ username }}</p>
-    {% endfor %}
-
-
-    <div class="centered">
+    <div class="centered w-100">
         <div class="d-flex flex-wrap gap-3 justify-content-center">
             {{ card("IPinfo.io", "/api/ip_info", "ipInfo") }}
-            {{ card("Mapy.com", "/api/mapy_cz", "mapyCz") }}
+            {{ card("HTTP Headers", "/api/http_headers", "httpHeaders") }}
+            <!-- {{ card("Mapy.com", "/api/mapy_cz", "mapyCz") }} -->
+            {{ card("Disify", "api/disify", "disify") }}
         </div>
     </div>
-
-
 {% endblock body %}

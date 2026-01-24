@@ -1,5 +1,5 @@
 
-import { schemaTable } from './schemas.js';
+import { schemaTable } from '/static/schemas.js';
 
 async function loadData(element) {
     try {
