@@ -1,4 +1,4 @@
-import re, requests
+import re, requests, subprocess
 
 def format_search_input(search_input: str):
     input_items = search_input.strip().split(' ')
@@ -16,6 +16,29 @@ def format_search_input(search_input: str):
             search_items["usernames"].append(item)
 
     return search_items
+
+def run_sherlock(usernames: list):
+    #TODO make it asynchoronously run a process for each username
+    #TODO stop it from creating files
+
+    data = {}
+
+    arguments = ["sherlock"]
+    arguments.extend(["asd", "adasf"])
+
+    sherlock_data = subprocess.check_output(arguments, text=True)
+
+    # Match all lines starting with '[+]'
+    lines = re.findall(r'\[\+\].+', sherlock_data)
+
+    for line in lines:
+        # Remove '[+] ' from the line
+        line = line [4:]
+
+        # Seperate a line into site and url
+        site, url = line.split(": ")
+
+        data[site] = url
 
 def query_api(endpoint: str, headers=None, timeout: int=1):
     response = None

@@ -1,5 +1,6 @@
 
 from flask import Flask, render_template, request, redirect, session
+import subprocess
 from functions import *
 from secret_keys import *
 
@@ -71,6 +72,9 @@ def email():
 
     return data
 
+# @app.route("/api/sherlock")
+# def sherlock():
+#     data = run_sherlock(session['search_items']['usernames'])
 
 if __name__ == "__main__":
     app.run(debug=True)
