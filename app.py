@@ -1,6 +1,6 @@
 
 from flask import Flask, render_template, request, redirect, session
-import subprocess, json
+import subprocess, json, time
 from functions import *
 from secret_keys import *
 
@@ -11,7 +11,8 @@ app.secret_key = session_key
 def landing():
 
     if request.method == "POST":
-        session['search_items'] = format_search_input(request.form.get("search_input"))
+        session['emails'] = request.form.get("emails").split(' ')
+        session['usernames'] = request.form.get("usernames").split(' ')
 
         return redirect("/search")
 
@@ -21,7 +22,7 @@ def landing():
 def search():
 #    ip_info = f.query_ip_info(request.remote_addr)
 
-    return render_template("search.html", search_items=session["search_items"])
+    return render_template("search.html")
 
 @app.route("/api/ip_info")
 def ip_info():
@@ -61,7 +62,7 @@ def http_headers():
 def email():
     data = {}
 
-    for email in session['search_items']['emails']:
+    for email in session['emails']:
         data_disify = query_disify(email)
 
         data[email] = {
@@ -77,7 +78,7 @@ def maigret():
     maigret_data = {}
     data = {}
 
-    for username in session["search_items"]["usernames"]:
+    for username in session['usernames']:
         data[username] = {}
 
         try:
@@ -91,6 +92,19 @@ def maigret():
                 'site': site,
                 'url': maigret_data[site]['url_user']
             }
+
+    return data
+
+@app.route("/api/xposedornot")
+def xposedornot():
+    data = {}
+
+    for email in session['emails']:
+        xposedornot_data = query_xposedornot(email)
+
+        data[email] = xposedornot_data
+
+        time.sleep(1)
 
     return data
 

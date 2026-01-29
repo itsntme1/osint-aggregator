@@ -6,7 +6,8 @@ export const schemaTable = {
     'mapyCz': mapyCz,
     'httpHeaders': httpHeaders,
     'disify': disify,
-    'maigret': maigret
+    'maigret': maigret,
+    'xposedornot': xposedornot
 };
 
 export function load() {
@@ -64,8 +65,6 @@ export function disify(data) {
     let outputData = "";
 
     for(let email in data) {
-        console.log(data[email]);
-
         outputData += `
             <li class="list-group-item">
                 <p class="p-0 fw-bold">${email}</p>
@@ -75,7 +74,7 @@ export function disify(data) {
                     <li class="list-group-item">Is disposable: ${data[email]['disposable']}</li>
                 </ul>
             </li>
-        \n`;
+        `;
 
         if(data[email]['valid']) {
             validExists = true;
@@ -107,14 +106,13 @@ export function maigret(data) {
     let sitesData = "";
 
     for(let username in data) {
-        
         for(let site in data[username]) {
             sitesData += `
                 <li class="list-group-item">
                     <p class="p-0 d-inline">${data[username][site]['site']}</p>
                     <a class="float-end me-2" href="${data[username][site]['url']}">Link</a>
                 </li>
-            \n`;
+            `;
         }
 
         outputData += `
@@ -124,13 +122,68 @@ export function maigret(data) {
                     ${sitesData}
                 </ul>
             </li>
-        \n`;
+        `;
     }
-    console.log(data.itisntme1.Roblox.site)
 
     return `
         <ul class="list-group list-group-flush">
             ${outputData}
         </ul>
+    `;
+}
+
+export function xposedornot(data) {
+    let breachExists = false
+    let outputData = "";
+
+    console.log(data)
+
+    for(let email in data) {
+        let breaches = "";
+
+        if(data[email]['Error'] == "Not found") {
+            breachExists = true;
+            
+            continue;
+        }
+
+        for(let breach in data[email]['breaches']) {
+            const breachName = data[email]['breaches'][breach];
+
+            breaches += `
+                <li class="list-group-item">
+                    <p class="p-0 d-inline">${breachName}</p>
+                    <a class="float-end me-2" target="_blank" href="https://www.google.com/search?q=${breachName} breach">Link</a>    
+                </li>
+            `;
+        }
+
+        outputData += `
+            <li class="list-group-item">
+                <p class="p-0 fw-bold">${email}</p>
+                <ul class="list-group">
+                    ${breaches}
+                </ul>
+            </li>
+        `;
+    }
+
+    if(!breachExists) {
+        return xposedornotError();
+    }
+
+    return `
+        <ul class="list-group list-group-flush">
+            ${outputData}
+        </ul>
+    `;
+}
+
+function xposedornotError() {
+    return `
+        <div class="centered">
+            <img class="w-100" src="/static/media/email-icon.png">
+            <p class="text-center fs-5">No breaches</p>
+        </div>
     `;
 }

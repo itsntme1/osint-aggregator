@@ -11,7 +11,9 @@ async function loadData(element) {
         
         element.innerHTML = await schemaTable[schema](data);
     }
-    catch {
+    catch (error) {
+        console.log(error)
+
         element.innerHTML = schemaTable['error']();
     }
 }
