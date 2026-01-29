@@ -1,6 +1,6 @@
 
 from flask import Flask, render_template, request, redirect, session
-import subprocess
+import subprocess, json
 from functions import *
 from secret_keys import *
 
@@ -72,9 +72,27 @@ def email():
 
     return data
 
-# @app.route("/api/sherlock")
-# def sherlock():
-#     data = run_sherlock(session['search_items']['usernames'])
+@app.route("/api/maigret")
+def maigret():
+    maigret_data = {}
+    data = {}
+
+    for username in session["search_items"]["usernames"]:
+        data[username] = {}
+
+        try:
+            maigret_data = load_report(username)
+        except:
+            run_maigret(username)
+            maigret_data = load_report(username)
+
+        for site in maigret_data:
+            data[username][site] = {
+                'site': site,
+                'url': maigret_data[site]['url_user']
+            }
+
+    return data
 
 if __name__ == "__main__":
     app.run(debug=True)

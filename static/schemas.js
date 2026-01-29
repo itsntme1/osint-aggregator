@@ -5,7 +5,8 @@ export const schemaTable = {
     'ipInfo': ipInfo,
     'mapyCz': mapyCz,
     'httpHeaders': httpHeaders,
-    'disify': disify
+    'disify': disify,
+    'maigret': maigret
 };
 
 export function load() {
@@ -66,7 +67,8 @@ export function disify(data) {
         console.log(data[email]);
 
         outputData += `
-            <li class="list-group-item"><p class="p-0 fw-bold">${email}</p>
+            <li class="list-group-item">
+                <p class="p-0 fw-bold">${email}</p>
                 <ul class="list-group">
                     <li class="list-group-item">Domain: ${data[email]['domain']}</li> 
                     <li class="list-group-item">Is valid: ${data[email]['valid']}</li>
@@ -97,5 +99,38 @@ function disifyError() {
             <img class="w-100" src="/static/media/email-icon.png">
             <p class="text-center fs-5">No valid emails</p>
         </div>
+    `;
+}
+
+export function maigret(data) {
+    let outputData = "";
+    let sitesData = "";
+
+    for(let username in data) {
+        
+        for(let site in data[username]) {
+            sitesData += `
+                <li class="list-group-item">
+                    <p class="p-0 d-inline">${data[username][site]['site']}</p>
+                    <a class="float-end me-2" href="${data[username][site]['url']}">Link</a>
+                </li>
+            \n`;
+        }
+
+        outputData += `
+            <li class="list-group-item">
+                <p class="p-0 fw-bold">${username}</p>
+                <ul class="list-group">
+                    ${sitesData}
+                </ul>
+            </li>
+        \n`;
+    }
+    console.log(data.itisntme1.Roblox.site)
+
+    return `
+        <ul class="list-group list-group-flush">
+            ${outputData}
+        </ul>
     `;
 }

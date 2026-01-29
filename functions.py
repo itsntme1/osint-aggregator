@@ -1,4 +1,4 @@
-import re, requests, subprocess
+import re, requests, subprocess, asyncio, json
 
 def format_search_input(search_input: str):
     input_items = search_input.strip().split(' ')
@@ -17,28 +17,17 @@ def format_search_input(search_input: str):
 
     return search_items
 
-def run_sherlock(usernames: list):
-    #TODO make it asynchoronously run a process for each username
-    #TODO stop it from creating files
+def run_maigret(username: str):
+    arguments = ["maigret", "--no-recursion", "--json", "simple"]
+    arguments.extend([username])
 
-    data = {}
+    subprocess.run(arguments)
 
-    arguments = ["sherlock"]
-    arguments.extend(["asd", "adasf"])
+def load_report(username: str):
+    with open(f"reports/report_{username}_simple.json", "r") as file:
+        data = json.load(file)
 
-    sherlock_data = subprocess.check_output(arguments, text=True)
-
-    # Match all lines starting with '[+]'
-    lines = re.findall(r'\[\+\].+', sherlock_data)
-
-    for line in lines:
-        # Remove '[+] ' from the line
-        line = line [4:]
-
-        # Seperate a line into site and url
-        site, url = line.split(": ")
-
-        data[site] = url
+    return data
 
 def query_api(endpoint: str, headers=None, timeout: int=1):
     response = None
