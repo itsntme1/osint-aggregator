@@ -1,6 +1,6 @@
 
 from flask import Flask, render_template, request, redirect, session, flash
-import subprocess, json, time
+import subprocess, json, time, math
 from functions import *
 from secret_keys import *
 
@@ -12,10 +12,11 @@ def landing():
     error = None
 
     if request.method == "POST":
-        session['emails'] = format_input(request.form.get("emails"))
+        session['name'] = request.form.get("name")
         session['usernames'] = format_input(request.form.get("usernames"))
+        session['emails'] = format_input(request.form.get("emails"))
 
-        if session['emails'] and session['usernames']:
+        if session['name'] and session['usernames'] and session['emails']:
             return redirect("/search")
             
         error = "Missing input"
@@ -24,7 +25,7 @@ def landing():
 
 @app.route("/search")
 def search():
-    if not session['emails'] or not session['usernames']:
+    if not session['name'] or not session['usernames'] or not session['emails']:
         return redirect("/")
 
     return render_template("search.html")
@@ -110,6 +111,25 @@ def xposedornot():
         data[email] = xposedornot_data
 
         time.sleep(1)
+
+    return data
+
+@app.route("/api/name_info")
+def name_info():
+    gender_data = query_genderize(session['name'])
+    age_data = query_agify(session['name'])
+    country_data = query_nationalize(session['name'])
+
+    data = {
+        'name': session['name'],
+        'gender': gender_data['gender'],
+        'gender_probability': math.floor(gender_data['probability'] * 100),
+        'age': age_data['age'],
+        'country': country_data['country'][0]['country_id'],
+        'country_probability': math.floor(country_data['country'][0]['probability'] * 100)
+    }
+
+    print(data)
 
     return data
 

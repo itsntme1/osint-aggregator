@@ -7,7 +7,8 @@ export const schemaTable = {
     'httpHeaders': httpHeaders,
     'disify': disify,
     'maigret': maigret,
-    'xposedornot': xposedornot
+    'xposedornot': xposedornot,
+    'nameInfo': nameInfo
 };
 
 export function load() {
@@ -117,7 +118,7 @@ export function maigret(data) {
 
         outputData += `
             <li class="list-group-item">
-                <p class="p-0 fw-bold">${username}</p>
+                <p class="fw-bold">${username}</p>
                 <ul class="list-group">
                     ${sitesData}
                 </ul>
@@ -160,7 +161,7 @@ export function xposedornot(data) {
 
         outputData += `
             <li class="list-group-item">
-                <p class="p-0 fw-bold">${email}</p>
+                <p class="fw-bold">${email}</p>
                 <ul class="list-group">
                     ${breaches}
                 </ul>
@@ -185,5 +186,28 @@ function xposedornotError() {
             <img class="w-100" src="/static/media/email-icon.png">
             <p class="text-center fs-5">No breaches</p>
         </div>
+    `;
+}
+
+export function nameInfo(data) {
+    return `
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <p class="d-inline">Name:</p>
+                <p class="float-end m-0">${data.name}</p>
+            </li>
+            <li class="list-group-item">
+                <p class="d-inline">Gender:</p>
+                <p class="float-end m-0">${data.gender} (${data.gender_probability}% sure)</p>
+            </li>
+            <li class="list-group-item">
+                <p class="d-inline">Age:</p>
+                <p class="float-end m-0">${data.age}</p>
+            </li>
+            <li class="list-group-item">
+                <p class="d-inline">Country:</p>
+                <p class="float-end m-0">${data.country} (${data.country_probability}% sure)</p>
+            </li>
+        </ul>
     `;
 }

@@ -32,6 +32,15 @@ def query_disify(email: str):
 def query_xposedornot(email: str):
     return query_api(f"https://api.xposedornot.com/v1/check-email/{email}").json()
 
+def query_genderize(name: str):
+    return query_api(f"https://api.genderize.io?name={name}").json()
+
+def query_agify(name: str):
+    return query_api(f"https://api.agify.io?name={name}").json()
+
+def query_nationalize(name: str):
+    return query_api(f"https://api.nationalize.io?name={name}").json()
+
 def run_maigret(username: str):
     arguments = ["maigret", "--no-recursion", "--json", "simple"]
     arguments.extend([username])
