@@ -168,7 +168,7 @@ export function xposedornot(data) {
         `;
     }
 
-    if(!breachExists) {
+    if(breachExists) {
         return xposedornotError();
     }
 

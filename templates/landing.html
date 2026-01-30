@@ -7,30 +7,31 @@
 {% endblock head %}
 
 {% block body %}
-    <div class="centered">
+    <div class="centered w-25 min-phone">
         <form action="/" method="post">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12 mt-2">
-                        <input name="emails" type="text" class="form-control" placeholder="user1@email.cz, user2@email.cz">
-                    </div>
+            <div class="row mb-3">
+                <div class="col-12">
+                    <label for="emails" class="form-label">Emails</label>
+                    <input name="emails" type="text" class="form-control" placeholder="user1@email.cz user2@email.cz ...">
                 </div>
-                <div class="row">
-                    <div class="col-12 mt-2">
-                        <input name="usernames" type="text" class="form-control" placeholder="username1, username2">
-                    </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-12">
+                    <label for="usernames" class="form-label">Usernames</label>
+                    <input name="usernames" type="text" class="form-control" placeholder="username1 username2 ...">
                 </div>
-                <div class="row">
-                    <div class="col-12 mt-2">
-                        <button type="submit" class="btn btn-primary w-100">Search</button>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-lg btn-primary w-100"><i class="bi bi-search me-2"></i>Search</button>
                 </div>
             </div>
         </form>
     </div>
 
     {% if error is not none() %}
-        <div class="alert alert-danger position-absolute bottom-0 start-50 translate-middle">
+        <div class="alert alert-danger position-absolute bottom-0 start-50 translate-middle p-2 ps-4 pe-4 rounded-4">
+            <i class="bi bi-exclamation-circle-fill"></i>
             {{ error }}
         </div>
     {% endif %}
