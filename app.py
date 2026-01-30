@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, flash
 import subprocess, json, time
 from functions import *
 from secret_keys import *
@@ -9,18 +9,23 @@ app.secret_key = session_key
 
 @app.route("/", methods = ["GET", "POST"])
 def landing():
+    error = None
 
     if request.method == "POST":
-        session['emails'] = request.form.get("emails").split(' ')
-        session['usernames'] = request.form.get("usernames").split(' ')
+        session['emails'] = format_input(request.form.get("emails"))
+        session['usernames'] = format_input(request.form.get("usernames"))
 
-        return redirect("/search")
+        if session['emails'] and session['usernames']:
+            return redirect("/search")
+            
+        error = "Missing input"
 
-    return render_template("landing.html")
+    return render_template("landing.html", error=error)
 
 @app.route("/search")
 def search():
-#    ip_info = f.query_ip_info(request.remote_addr)
+    if not session['emails'] or not session['usernames']:
+        return redirect("/")
 
     return render_template("search.html")
 

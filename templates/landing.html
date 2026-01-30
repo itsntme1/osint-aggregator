@@ -22,10 +22,16 @@
                 </div>
                 <div class="row">
                     <div class="col-12 mt-2">
-                        <button type="submit" class="btn btn-primary w-100">Hledat</button>
+                        <button type="submit" class="btn btn-primary w-100">Search</button>
                     </div>
                 </div>
             </div>
         </form>
     </div>
+
+    {% if error is not none() %}
+        <div class="alert alert-danger position-absolute bottom-0 start-50 translate-middle">
+            {{ error }}
+        </div>
+    {% endif %}
 {% endblock body %}

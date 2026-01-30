@@ -1,5 +1,11 @@
 import re, requests, subprocess, asyncio, json
 
+def format_input(input: string):
+    if input != "":
+        input = input.split(' ')
+
+        return input
+
 def query_api(endpoint: str, headers=None, timeout: int=1):
     response = None
 
@@ -29,8 +35,6 @@ def query_xposedornot(email: str):
 def run_maigret(username: str):
     arguments = ["maigret", "--no-recursion", "--json", "simple"]
     arguments.extend([username])
-
-    print(arguments)
 
     subprocess.run(arguments)
 
