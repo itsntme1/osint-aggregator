@@ -20,6 +20,35 @@
             {{ card("Maigret", "/api/maigret", "maigret") }}
             {{ card("XposedOrNot", "/api/xposedornot", "xposedornot")}}
             {{ card("Name Info", "/api/name_info", "nameInfo") }}
+
+            <div class="card fixed-card"">
+                <div class="card-header bg-info">
+                    <p class="m-0 fs-5 fw-semibold d-inline">About</p>
+                </div>
+                <div class="card-body p-0 overflow-y-scroll" style="height: 300px; position: relative">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <p class="d-inline">Name:</p>
+                            <p class="float-end m-0">Jan Šparlinek</p>
+                        </li>
+                        <li class="list-group-item">
+                            <p class="d-inline">Date:</p>
+                            <p class="float-end m-0">[DATE]</p>
+                        </li>
+                        <li class="list-group-item">
+                            <p class="d-inline">School:</p>
+                            <p class="float-end m-0">Gymnázium Ústí nad Orlicí</p>
+                        </li>
+                        <li class="list-group-item">
+                            <p class="d-inline">Source & Documentation:</p>
+                            <p class="float-end m-0">[GITHUB] [DOCUMENTATION]</p>
+                        </li>
+                        <li class="list-group-item">
+                            <p class="d-inline">[EXPORT REPORT]</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock body %}

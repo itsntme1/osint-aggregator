@@ -1,6 +1,9 @@
 
-from flask import Flask, render_template, request, redirect, session, flash
+from flask import Flask, render_template, request, redirect, session, send_file
+import typst
+
 import subprocess, json, time, math
+
 from functions import *
 from secret_keys import *
 
@@ -36,6 +39,7 @@ def ip_info():
     data = query_ip_info("90.177.145.18", ip_info_key)
 
     session['coordinates'] = data['loc'].split(',')
+    session['ip_info'] = data
 
     return data
 
@@ -55,12 +59,15 @@ def mapy_cz():
 
 @app.route("/api/http_headers")
 def http_headers():
+
     # Format data
     data = {
         'user_agent': request.headers.get('User-Agent'),
         'os': request.headers.get('Sec-Ch-Ua-Platform')[1:-1],
         'language': request.headers.get('Accept-Language')[:2]
     }
+
+    session['http_headers'] = data
 
     return data
 
@@ -76,6 +83,8 @@ def email():
             'valid': data_disify['format'],
             'disposable': data_disify['disposable']
         }
+
+    session['disify'] = data
 
     return data
 
@@ -99,6 +108,8 @@ def maigret():
                 'url': maigret_data[site]['url_user']
             }
 
+    session['maigret'] = data
+
     return data
 
 @app.route("/api/xposedornot")
@@ -111,6 +122,8 @@ def xposedornot():
         data[email] = xposedornot_data
 
         time.sleep(1)
+
+    session['xposedornot'] = data
 
     return data
 
@@ -129,9 +142,17 @@ def name_info():
         'country_probability': math.floor(country_data['country'][0]['probability'] * 100)
     }
 
-    print(data)
+    session['name_info'] = data
 
     return data
+
+@app.route("/api/export")
+def export():
+    data = {"root": json.dumps(dict(session))}
+
+    typst.compile("report.typ", output=f"{session['name']}_report.pdf", sys_inputs=data)
+
+    return send_file(f"{session['name']}_report.pdf")
 
 if __name__ == "__main__":
     app.run(debug=True)
