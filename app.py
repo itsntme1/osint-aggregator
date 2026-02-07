@@ -1,9 +1,12 @@
 
+# External modules
 from flask import Flask, render_template, request, redirect, session, send_file
 import typst
 
+# Built-in modules
 import subprocess, json, time, math
 
+# Internal modules
 from functions import *
 from secret_keys import *
 
@@ -146,11 +149,21 @@ def name_info():
 
     return data
 
-@app.route("/api/export")
+@app.route("/export")
 def export():
-    data = {"root": json.dumps(dict(session))}
+    # Export session variables to json for typst to import
+    export_to_json("name", session)
+    export_to_json("usernames", session)
+    export_to_json("emails", session)
+    export_to_json("ip_info", session)
+    export_to_json("coordinates", session)
+    export_to_json("http_headers", session)
+    export_to_json("disify", session)
+    export_to_json("maigret", session)
+    export_to_json("xposedornot", session)
+    export_to_json("name_info", session)
 
-    typst.compile("report.typ", output=f"{session['name']}_report.pdf", sys_inputs=data)
+    typst.compile("report.typ", output=f"{session['name']}_report.pdf")
 
     return send_file(f"{session['name']}_report.pdf")
 
