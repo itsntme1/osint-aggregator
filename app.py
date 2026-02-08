@@ -1,10 +1,10 @@
 
 # External modules
 from flask import Flask, render_template, request, redirect, session, send_file
-import typst
+import typst, wget
 
 # Built-in modules
-import subprocess, json, time, math
+import subprocess, json, time, math, os
 
 # Internal modules
 from functions import *
@@ -80,6 +80,15 @@ def email():
 
     for email in session['emails']:
         data_disify = query_disify(email)
+
+        if not data_disify['format']:
+            data[email] = {
+                'domain': "none",
+                'valid': False,
+                'disposable': "unknown"
+            }
+
+            continue
 
         data[email] = {
             'domain': data_disify['domain'],
@@ -163,7 +172,16 @@ def export():
     export_to_json("xposedornot", session)
     export_to_json("name_info", session)
 
+    # Download the map
+    # wget.download(
+    #     url=f"https://api.mapy.com/v1/static/map?lon={session['coordinates'][1]}&lat={session['coordinates'][0]}&zoom=4&width=540&height=450&mapset=basic&markers=color:red;size:normal;{session['coordinates'][1]},{session['coordinates'][0]}&apikey={mapy_cz_key}",
+    #     out="export/map.png"
+    # )
+
     typst.compile("report.typ", output=f"{session['name']}_report.pdf")
+
+    # Remove files
+    os.remove("/export/*.json")
 
     return send_file(f"{session['name']}_report.pdf")
 

@@ -10,7 +10,7 @@
 #let name-info = json("export/name_info.json")
 
 
-#set text(size: 14pt)
+#set text(size: 11pt)
 #show heading: set block(above: 30pt, below: 30pt)
 #show link: set text(fill: blue)
 
@@ -23,7 +23,7 @@
   align: (x, _) => if x == 0 {left} else {center},
 )
 
-#align(center)[= Report for #name]
+#align(center)[#title("Report for " + [#name])]
 
 == Personal Info
 #table(
@@ -33,34 +33,8 @@
   [Country], [#name-info.country], [#name-info.country_probability],
   [Gender], [#name-info.gender], [#name-info.gender_probability]
 )
-Usernames: #for username in usernames {
-  username 
-} \
-Emails: #for email in emails {
-  email
-}
-
-== IP Info
-#align(center)[*#ip-info.ip*]
-#line(length: 100%)
-#grid(
-  columns: (1fr, 1fr),
-  column-gutter: 20pt,
-  grid(
-    columns: (1fr, 1fr),
-    row-gutter: 10pt,
-    [Country],align(right)[#ip-info.country],
-    [Region],align(right)[#ip-info.region],
-    [City],align(right)[#ip-info.city],
-  ),
-  grid(
-    columns: (1fr, 1fr),
-    row-gutter: 10pt,
-    [Timezone],align(right)[#ip-info.timezone],
-    [Postal Code],align(right)[#ip-info.postal],
-    [Coordinates],align(right)[#coordinates.at(0)#sym.degree #coordinates.at(1)#sym.degree]
-  )
-)
+Usernames: #usernames.join(", ") \
+Emails: #emails.join(", ")
 
 == HTTP Headers
 #grid(
@@ -88,7 +62,10 @@ Emails: #for email in emails {
 == Email Credentials Breaches
 #for (email, data) in xposedornot {
   if data.values().len() == 2 [
-    [No credential breaches detected #emoji.face]
+    #grid(
+      columns: (1fr, 1fr),
+      [*#email*:], align(right)[No breaches detected]
+    )
   ] else [
     #grid(
       columns: (1fr, 1fr),
@@ -96,6 +73,30 @@ Emails: #for email in emails {
     )
   ]
 }
+
+== IP Info
+#align(center)[*#ip-info.ip*]
+#line(length: 100%)
+#grid(
+  columns: (1fr, 1fr),
+  column-gutter: 20pt,
+  grid(
+    columns: (1fr, 1fr),
+    row-gutter: 10pt,
+    [Country],align(right)[#ip-info.country],
+    [Region],align(right)[#ip-info.region],
+    [City],align(right)[#ip-info.city],
+  ),
+  grid(
+    columns: (1fr, 1fr),
+    row-gutter: 10pt,
+    [Timezone],align(right)[#ip-info.timezone],
+    [Postal Code],align(right)[#ip-info.postal],
+    [Coordinates],align(right)[#coordinates.at(0)#sym.degree #coordinates.at(1)#sym.degree]
+  )
+)
+
+#image("export/map.png")
 
 == Maigret Lookup
 #for (username, sites) in maigret {
@@ -110,6 +111,3 @@ Emails: #for email in emails {
     )
   }
 }
-
-== Map
-TODO
