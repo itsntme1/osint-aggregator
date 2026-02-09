@@ -1,4 +1,6 @@
-#let name = json("export/name.json")
+#let inputs = json(bytes(sys.inputs))
+
+#let name = inputs.name
 #let usernames = json("export/usernames.json")
 #let emails = json("export/emails.json")
 #let ip-info = json("export/ip_info.json")

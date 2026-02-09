@@ -11,7 +11,7 @@
 {% endblock head %}
 
 {% block body %}
-    <div class="centered w-100">
+    <div class="centered w-100" style="max-width: 1500px;">
         <div class="d-flex flex-wrap gap-3 justify-content-center">
             {{ card("IPinfo.io", "/api/ip_info", "ipInfo") }}
             {{ card("HTTP Headers", "/api/http_headers", "httpHeaders") }}

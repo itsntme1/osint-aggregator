@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, redirect, session, send_file
 import typst, wget
 
 # Built-in modules
-import subprocess, json, time, math, os
+import subprocess, json, time, math, os, random
 
 # Internal modules
 from functions import *
@@ -21,6 +21,7 @@ def landing():
         session['name'] = request.form.get("name")
         session['usernames'] = format_input(request.form.get("usernames"))
         session['emails'] = format_input(request.form.get("emails"))
+        session['user_hash'] = hash(session['name'] + "".join(session['usernames']) + "".join(session['emails']))
 
         if session['name'] and session['usernames'] and session['emails']:
             return redirect("/search")
@@ -41,8 +42,8 @@ def ip_info():
     # data = query_ip_info(request.remote_addr, ip_info_key)
     data = query_ip_info("90.177.145.18", ip_info_key)
 
-    session['coordinates'] = data['loc'].split(',')
-    session['ip_info'] = data
+    export_to_json(data['loc'].split(','), "coordinates", session, session['user_hash'])
+    export_to_json(data, "ip_info", session, session['user_hash'])
 
     return data
 
@@ -70,12 +71,12 @@ def http_headers():
         'language': request.headers.get('Accept-Language')[:2]
     }
 
-    session['http_headers'] = data
+    export_to_json(data, "http_headers", session, session['user_hash'])
 
     return data
 
 @app.route("/api/disify")
-def email():
+def disify():
     data = {}
 
     for email in session['emails']:
@@ -96,7 +97,7 @@ def email():
             'disposable': data_disify['disposable']
         }
 
-    session['disify'] = data
+    export_to_json(data, "disify", session, session['user_hash'])
 
     return data
 
@@ -120,7 +121,7 @@ def maigret():
                 'url': maigret_data[site]['url_user']
             }
 
-    session['maigret'] = data
+    export_to_json(data, "maigret", session, session['user_hash'])
 
     return data
 
@@ -133,9 +134,10 @@ def xposedornot():
 
         data[email] = xposedornot_data
 
+        # This is here to avoid rate limits
         time.sleep(1)
 
-    session['xposedornot'] = data
+    export_to_json(data, "xposedornot", session, session['user_hash'])
 
     return data
 
@@ -154,36 +156,33 @@ def name_info():
         'country_probability': math.floor(country_data['country'][0]['probability'] * 100)
     }
 
-    session['name_info'] = data
+    export_to_json(data, "name_info", session, session['user_hash'])
 
     return data
 
 @app.route("/export")
 def export():
-    # Export session variables to json for typst to import
-    export_to_json("name", session)
-    export_to_json("usernames", session)
-    export_to_json("emails", session)
-    export_to_json("ip_info", session)
-    export_to_json("coordinates", session)
-    export_to_json("http_headers", session)
-    export_to_json("disify", session)
-    export_to_json("maigret", session)
-    export_to_json("xposedornot", session)
-    export_to_json("name_info", session)
-
     # Download the map
     # wget.download(
     #     url=f"https://api.mapy.com/v1/static/map?lon={session['coordinates'][1]}&lat={session['coordinates'][0]}&zoom=4&width=540&height=450&mapset=basic&markers=color:red;size:normal;{session['coordinates'][1]},{session['coordinates'][0]}&apikey={mapy_cz_key}",
     #     out="export/map.png"
     # )
 
-    typst.compile("report.typ", output=f"{session['name']}_report.pdf")
+    sys_inputs = {'user_hash': json.dumps(str(session['user_hash']))}
+    typst.compile("report.typ",
+        output=f"reports/{session['name']}_report.pdf",
+        sys_inputs={
+            'name': session['name']
+            # 'usernames': session['usernames'],
+            # 'emails': session['usernames']
+        }
+    )
 
     # Remove files
-    os.remove("/export/*.json")
+    # for file in os.listdir("export"):
+    #     os.remove(f"export/{file}")
 
-    return send_file(f"{session['name']}_report.pdf")
+    return send_file(f"reports/{session['name']}_report.pdf", as_attachment=False)
 
 if __name__ == "__main__":
     app.run(debug=True)
