@@ -163,24 +163,40 @@ def name_info():
 @app.route("/export")
 def export():
     # Download the map
-    # wget.download(
-    #     url=f"https://api.mapy.com/v1/static/map?lon={session['coordinates'][1]}&lat={session['coordinates'][0]}&zoom=4&width=540&height=450&mapset=basic&markers=color:red;size:normal;{session['coordinates'][1]},{session['coordinates'][0]}&apikey={mapy_cz_key}",
-    #     out="export/map.png"
-    # )
+    wget.download(
+        url=f"https://api.mapy.com/v1/static/map?lon={session['coordinates'][1]}&lat={session['coordinates'][0]}&zoom=4&width=540&height=450&mapset=basic&markers=color:red;size:normal;{session['coordinates'][1]},{session['coordinates'][0]}&apikey={mapy_cz_key}",
+        out=f"export/{session['user_hash']}_map.png"
+    )
 
-    sys_inputs = {'user_hash': json.dumps(str(session['user_hash']))}
+    # Load json data
+    ip_info = load_from_json("ip_info", session, session['user_hash'])
+    coordinates = load_from_json("coordinates", session, session['user_hash'])
+    http_headers = load_from_json("http_headers", session, session['user_hash'])
+    disify = load_from_json("disify", session, session['user_hash'])
+    maigret = load_from_json("maigret", session, session['user_hash'])
+    xposedornot = load_from_json("xposedornot", session, session['user_hash'])
+    name_info = load_from_json("name_info", session, session['user_hash'])
+
+    data = {
+            'name': session['name'],
+            'usernames': json.dumps(session['usernames']),
+            'emails': json.dumps(session['emails']),
+            'ip_info': json.dumps(ip_info),
+            'coordinates': json.dumps(coordinates),
+            'http_headers': json.dumps(http_headers),
+            'disify': json.dumps(disify),
+            'maigret': json.dumps(maigret),
+            'xposedornot': json.dumps(xposedornot),
+            'name_info': json.dumps(name_info)
+        }
     typst.compile("report.typ",
         output=f"reports/{session['name']}_report.pdf",
-        sys_inputs={
-            'name': session['name']
-            # 'usernames': session['usernames'],
-            # 'emails': session['usernames']
-        }
+        sys_inputs=data
     )
 
     # Remove files
-    # for file in os.listdir("export"):
-    #     os.remove(f"export/{file}")
+    for file in os.listdir("export"):
+        os.remove(f"export/{file}")
 
     return send_file(f"reports/{session['name']}_report.pdf", as_attachment=False)
 

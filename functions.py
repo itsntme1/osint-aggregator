@@ -56,3 +56,7 @@ def load_report(username: str):
 def export_to_json(variable, name, session, user_hash):
     with open(f"export/{user_hash}_{name}.json", "w") as file:
         json.dump(variable, file)
+
+def load_from_json(name, session, user_hash):
+    with open(f"export/{user_hash}_{name}.json", "r") as file:
+        return json.load(file)

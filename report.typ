@@ -1,15 +1,15 @@
-#let inputs = json(bytes(sys.inputs))
+#let data = sys.inputs
 
-#let name = inputs.name
-#let usernames = json("export/usernames.json")
-#let emails = json("export/emails.json")
-#let ip-info = json("export/ip_info.json")
-#let coordinates = json("export/coordinates.json")
-#let http-headers = json("export/http_headers.json")
-#let disify = json("export/disify.json")
-#let maigret = json("export/maigret.json")
-#let xposedornot = json("export/xposedornot.json")
-#let name-info = json("export/name_info.json")
+#let name = data.name
+#let usernames = json(bytes(data.usernames))
+#let emails = json(bytes(data.emails))
+#let ip-info = json(bytes(data.ip_info))
+#let coordinates = json(bytes(data.coordinates))
+#let http-headers = json(bytes(data.http_headers))
+#let disify = json(bytes(data.disify))
+#let maigret = json(bytes(data.maigret))
+#let xposedornot = json(bytes(data.xposedornot))
+#let name-info = json(bytes(data.name_info))
 
 
 #set text(size: 11pt)
@@ -30,21 +30,21 @@
 == Personal Info
 #table(
   columns: (auto, 1fr, 1fr),
-  table.header([#name],[],[Probability]),
-  [Age], [#name-info.age], [],
-  [Country], [#name-info.country], [#name-info.country_probability],
-  [Gender], [#name-info.gender], [#name-info.gender_probability]
+  table.header([*#name*],[],[*Probability*]),
+  [*Age*], [#name-info.age], [],
+  [*Country*], [#name-info.country], [#name-info.country_probability],
+  [*Gender*], [#name-info.gender], [#name-info.gender_probability]
 )
-Usernames: #usernames.join(", ") \
-Emails: #emails.join(", ")
+*Usernames*: #usernames.join(", ") \
+*Emails*: #emails.join(", ")
 
 == HTTP Headers
 #grid(
     columns: (1fr, 1fr),
     row-gutter: 10pt,
-    [User Agent],align(right)[#http-headers.user_agent],
-    [Operating System],align(right)[#http-headers.os],
-    [Language],align(right)[#http-headers.language]
+    [*User Agent*],align(right)[#http-headers.user_agent],
+    [*Operating System*],align(right)[#http-headers.os],
+    [*Language*],align(right)[#http-headers.language]
 )
 
 == Email Info
@@ -85,16 +85,16 @@ Emails: #emails.join(", ")
   grid(
     columns: (1fr, 1fr),
     row-gutter: 10pt,
-    [Country],align(right)[#ip-info.country],
-    [Region],align(right)[#ip-info.region],
-    [City],align(right)[#ip-info.city],
+    [*Country*],align(right)[#ip-info.country],
+    [*Region*],align(right)[#ip-info.region],
+    [*City*],align(right)[#ip-info.city],
   ),
   grid(
     columns: (1fr, 1fr),
     row-gutter: 10pt,
-    [Timezone],align(right)[#ip-info.timezone],
-    [Postal Code],align(right)[#ip-info.postal],
-    [Coordinates],align(right)[#coordinates.at(0)#sym.degree #coordinates.at(1)#sym.degree]
+    [*Timezone*],align(right)[#ip-info.timezone],
+    [*Postal Code*],align(right)[#ip-info.postal],
+    [*Coordinates*],align(right)[#coordinates.at(0)#sym.degree #coordinates.at(1)#sym.degree]
   )
 )
 
@@ -109,7 +109,7 @@ Emails: #emails.join(", ")
     grid(
       columns: (1fr, 2fr),
       column-gutter: 20pt,
-      [#site:], align(right)[#link(data.url)]
+      [*#site*:], align(right)[#link(data.url)]
     )
   }
 }
