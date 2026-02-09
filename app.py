@@ -21,9 +21,10 @@ def landing():
         session['name'] = request.form.get("name")
         session['usernames'] = format_input(request.form.get("usernames"))
         session['emails'] = format_input(request.form.get("emails"))
-        session['user_hash'] = hash(session['name'] + "".join(session['usernames']) + "".join(session['emails']))
 
         if session['name'] and session['usernames'] and session['emails']:
+            session['user_hash'] = hash(session['name'] + "".join(session['usernames']) + "".join(session['emails']))
+            
             return redirect("/search")
             
         error = "Missing input"

@@ -13,13 +13,13 @@
 {% block body %}
     <div class="centered w-100" style="max-width: 1500px;">
         <div class="d-flex flex-wrap gap-3 justify-content-center">
-            {{ card("IPinfo.io", "/api/ip_info", "ipInfo") }}
+            <!-- {{ card("IPinfo.io", "/api/ip_info", "ipInfo") }}
             {{ card("HTTP Headers", "/api/http_headers", "httpHeaders") }}
             {{ card("Mapy.com", "/api/mapy_cz", "mapyCz") }}
             {{ card("Disify", "/api/disify", "disify") }}
             {{ card("Maigret", "/api/maigret", "maigret") }}
             {{ card("XposedOrNot", "/api/xposedornot", "xposedornot")}}
-            {{ card("Name Info", "/api/name_info", "nameInfo") }}
+            {{ card("Name Info", "/api/name_info", "nameInfo") }} -->
 
             <div class="card fixed-card"">
                 <div class="card-header bg-info">
@@ -37,14 +37,26 @@
                         </li>
                         <li class="list-group-item">
                             <p class="d-inline">School:</p>
-                            <p class="float-end m-0">Gymnázium Ústí nad Orlicí</p>
+                            <p class="float-end m-0">
+                                <a href="Gymnázium Ústí nad Orlicí" target="_blank">Gymnázium Ústí nad Orlicí</a>
+                            </p>
                         </li>
                         <li class="list-group-item">
                             <p class="d-inline">Source & Documentation:</p>
-                            <p class="float-end m-0">[GITHUB] [DOCUMENTATION]</p>
+                            <p class="float-end m-0 p-0">
+                                <a href="https://github.com/itsntme1/osint-aggregator" target="_blank" style="text-decoration: none;">
+                                    <i class="bi bi-github icon"></i>
+                                </a>
+                                <a href="/app.py">
+                                    <i class="bi bi-file-earmark-text icon"></i>
+                                </a>
+                            </p>
                         </li>
                         <li class="list-group-item">
-                            <p class="d-inline"><button onclick="location.href='/export'">Export</button></p>
+                            <button class="btn btn-warning w-100" onclick="location.href='/export'">
+                                <i class="bi bi-file-earmark-arrow-up"></i>
+                                Export
+                            </button>
                         </li>
                     </ul>
                 </div>
