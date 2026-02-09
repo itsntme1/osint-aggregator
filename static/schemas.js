@@ -24,21 +24,44 @@ export function error() {
     return `
         <div class="centered">
             <img class="w-100" src="/static/media/warning-icon.png">
-            <p class="text-center fs-5">Failed to load</p>
+            <p class="text-center fs-5 fw-semibold">Failed to load</p>
         </div>
     `;
 }
 
 export function ipInfo(data) {
+    const [latitude, longtitude] = data.loc.split(",");
+
     return `
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">Ip adress: ${data.ip}</li>
-            <li class="list-group-item">Timezone: ${data.timezone}</li>
-            <li class="list-group-item">Country: ${data.country}</li>
-            <li class="list-group-item">Region: ${data.region}</li>
-            <li class="list-group-item">City: ${data.city}</li>
-            <li class="list-group-item">Postal code: ${data.postal}</li>
-            <li class="list-group-item">Location: ${data.loc}</li>
+            <li class="list-group-item">
+                <p class="d-inline fw-semibold">Ip adress:</p>
+                <p class="d-inline m-0 float-end">${data.ip}</p>
+            </li>
+            <li class="list-group-item">
+                <p class="d-inline fw-semibold">Timezone:</p>
+                <p class="d-inline m-0 float-end">${data.timezone}</p>
+            </li>
+            <li class="list-group-item">
+                <p class="d-inline fw-semibold">Country:</p>
+                <p class="d-inline m-0 float-end">${data.country}</p>
+            </li>
+            <li class="list-group-item">
+                <p class="d-inline fw-semibold">Region:</p>
+                <p class="d-inline m-0 float-end">${data.region}</p>
+            </li>
+            <li class="list-group-item">
+                <p class="d-inline fw-semibold">City:</p>
+                <p class="d-inline m-0 float-end">${data.city}</p>
+            </li>
+            <li class="list-group-item">
+                <p class="d-inline fw-semibold">Postal code:</p>
+                <p class="d-inline m-0 float-end">${data.postal}</p>
+            </li>
+            <li class="list-group-item">
+                <p class="d-inline fw-semibold">Location:</p>
+                <p class="d-inline m-0 float-end">${latitude}&#176; ${longtitude}&#176;</p>
+            </li>
         </ul>
     `;
 }
@@ -54,9 +77,18 @@ export function mapyCz(data) {
 export function httpHeaders(data) {
     return `
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">User Agent: ${data.user_agent}</li>
-            <li class="list-group-item">Operating system: ${data.os}</li>
-            <li class="list-group-item">Language: ${data.language}</li>
+            <li class="list-group-item">
+                <p class="d-inline fw-semibold">User Agent:</p>
+                <p class="d-inline m-0 float-end">${data.user_agent}</p>
+            </li>
+            <li class="list-group-item">
+                <p class="d-inline fw-semibold">Operating system:</p>
+                <p class="d-inline m-0 float-end">${data.os}</p>
+            </li>
+            <li class="list-group-item">
+                <p class="d-inline fw-semibold">Language:</p>
+                <p class="d-inline m-0 float-end">${data.language}</p>
+            </li>
         </ul>
     `;
 }
@@ -70,9 +102,18 @@ export function disify(data) {
             <li class="list-group-item">
                 <p class="p-0 fw-bold">${email}</p>
                 <ul class="list-group">
-                    <li class="list-group-item">Domain: ${data[email]['domain']}</li> 
-                    <li class="list-group-item">Is valid: ${data[email]['valid']}</li>
-                    <li class="list-group-item">Is disposable: ${data[email]['disposable']}</li>
+                    <li class="list-group-item">
+                        <p class="d-inline fw-semibold">Domain:</p>
+                        <p class="d-inline m-0 float-end">${data[email]['domain']}</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p class="d-inline fw-semibold">Is valid?:</p>
+                        <p class="d-inline m-0 float-end">${data[email]['valid']}</p>
+                    </li>
+                    <li class="list-group-item">
+                        <p class="d-inline fw-semibold">Is disposable?:</p>
+                        <p class="d-inline m-0 float-end">${data[email]['disposable']}</p>
+                    </li>
                 </ul>
             </li>
         `;
@@ -97,7 +138,7 @@ function disifyError() {
     return `
         <div class="centered">
             <img class="w-100" src="/static/media/email-icon.png">
-            <p class="text-center fs-5">No valid emails</p>
+            <p class="text-center fs-5 fw-semibold">No valid emails</p>
         </div>
     `;
 }
@@ -110,7 +151,7 @@ export function maigret(data) {
         for(let site in data[username]) {
             sitesData += `
                 <li class="list-group-item">
-                    <p class="p-0 d-inline">${data[username][site]['site']}</p>
+                    <p class="p-0 d-inline fw-semibold">${data[username][site]['site']}</p>
                     <a class="float-end me-2" href="${data[username][site]['url']}">Link</a>
                 </li>
             `;
@@ -153,7 +194,7 @@ export function xposedornot(data) {
 
             breaches += `
                 <li class="list-group-item">
-                    <p class="p-0 d-inline">${breachName}</p>
+                    <p class="p-0 d-inline fw-semibold">${breachName}</p>
                     <a class="float-end me-2" target="_blank" href="https://www.google.com/search?q=${breachName} breach">Link</a>    
                 </li>
             `;
@@ -161,7 +202,7 @@ export function xposedornot(data) {
 
         outputData += `
             <li class="list-group-item">
-                <p class="fw-bold">${email}</p>
+                <p class="fw-semibold">${email}</p>
                 <ul class="list-group">
                     ${breaches}
                 </ul>
@@ -184,7 +225,7 @@ function xposedornotError() {
     return `
         <div class="centered">
             <img class="w-100" src="/static/media/email-icon.png">
-            <p class="text-center fs-5">No breaches</p>
+            <p class="text-center fs-5 fw-semibold">No breaches</p>
         </div>
     `;
 }
@@ -193,19 +234,19 @@ export function nameInfo(data) {
     return `
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
-                <p class="d-inline">Name:</p>
+                <p class="d-inline fw-semibold">Name:</p>
                 <p class="float-end m-0">${data.name}</p>
             </li>
             <li class="list-group-item">
-                <p class="d-inline">Gender:</p>
+                <p class="d-inline fw-semibold">Gender:</p>
                 <p class="float-end m-0">${data.gender} (${data.gender_probability}% sure)</p>
             </li>
             <li class="list-group-item">
-                <p class="d-inline">Age:</p>
+                <p class="d-inline fw-semibold">Age:</p>
                 <p class="float-end m-0">${data.age}</p>
             </li>
             <li class="list-group-item">
-                <p class="d-inline">Country:</p>
+                <p class="d-inline fw-semibold">Country:</p>
                 <p class="float-end m-0">${data.country} (${data.country_probability}% sure)</p>
             </li>
         </ul>

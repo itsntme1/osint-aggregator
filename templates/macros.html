@@ -1,10 +1,10 @@
 
 {% macro card(title, endpoint, schema) %}
-<div class="card fixed-card" data-title="{{ title }}" data-endpoint="{{ endpoint }}" data-schema="{{ schema }}">
-    <div class="card-header bg-info">
-        <p class="m-0 fs-5 fw-semibold d-inline">{{ title }}</p>
-        <button class="btn btn-danger btn-sm float-end" data-reload="")">
-            <img style="width: 16px;" src="/static/media/reload-icon.png" alt="reload">
+<div class="card fixed-card shadow" data-title="{{ title }}" data-endpoint="{{ endpoint }}" data-schema="{{ schema }}">
+    <div class="card-header bg-dark">
+        <p class="m-0 fs-5 fw-semibold d-inline text-white">{{ title }}</p>
+        <button class="btn btn-dark btn-lg m-0 p-0 ps-1 pe-1 float-end" data-reload="")">
+            <i class="bi bi-arrow-repeat text-white"></i>
         </button>
     </div>
     <div class="card-body p-0 overflow-y-scroll" data-display style="height: 300px; position: relative">
