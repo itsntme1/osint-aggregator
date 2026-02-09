@@ -25,18 +25,18 @@ def landing():
         if session['name'] and session['usernames'] and session['emails']:
             session['user_hash'] = hash(session['name'] + "".join(session['usernames']) + "".join(session['emails']))
             
-            return redirect("/search")
+            return redirect("/dashboard")
             
         error = "Missing input"
 
     return render_template("landing.html", error=error)
 
-@app.route("/search")
-def search():
+@app.route("/dashboard")
+def dashboard():
     if not session['name'] or not session['usernames'] or not session['emails']:
         return redirect("/")
 
-    return render_template("search.html")
+    return render_template("dashboard.html")
 
 @app.route("/api/ip_info")
 def ip_info():
