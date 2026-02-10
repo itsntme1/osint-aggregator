@@ -6,40 +6,43 @@ def format_input(input: string):
 
         return input
 
-def query_api(endpoint: str, headers=None, timeout: int=1):
-    response = None
-
+def query_api(endpoint: str, headers=None, timeout: int=5):
     try:
         response = requests.get(endpoint, headers=headers, timeout=timeout)
 
         if response.status_code != 200:
+            print(f"Endpoint: {endpoint}")
+            print(f"Headers: {headers}")
+            print(f'Response: {response.text}')
             print(f"Status code: {response.status_code}")
-            response = None
-
-            return
 
     except Exception as error:
         print(f"query_api: {error}")
-    
-    return response
+    try:
+        return response.json()
+    except:
+        return response
+
+def query_icanhazip():
+    return query_api("https://icanhazip.com")
 
 def query_ip_info(ip: str, token: str):
-    return query_api(f"https://ipinfo.io/{ip}", {"Authorization": f"Bearer {token}"}).json()
+    return query_api(f"https://ipinfo.io/{ip}", {"Authorization": f"Bearer {token}"})
 
 def query_disify(email: str):
-    return query_api(f"https://disify.com/api/email/{email}").json()
+    return query_api(f"https://disify.com/api/email/{email}")
 
 def query_xposedornot(email: str):
-    return query_api(f"https://api.xposedornot.com/v1/check-email/{email}").json()
+    return query_api(f"https://api.xposedornot.com/v1/check-email/{email}")
 
 def query_genderize(name: str):
-    return query_api(f"https://api.genderize.io?name={name}").json()
+    return query_api(f"https://api.genderize.io?name={name}")
 
 def query_agify(name: str):
-    return query_api(f"https://api.agify.io?name={name}").json()
+    return query_api(f"https://api.agify.io?name={name}")
 
 def query_nationalize(name: str):
-    return query_api(f"https://api.nationalize.io?name={name}").json()
+    return query_api(f"https://api.nationalize.io?name={name}")
 
 def run_maigret(username: str):
     arguments = ["maigret", "--no-recursion", "--json", "simple"]

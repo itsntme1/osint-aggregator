@@ -40,9 +40,14 @@ def dashboard():
 
 @app.route("/api/ip_info")
 def ip_info():
-    # data = query_ip_info(request.remote_addr, ip_info_key)
-    data = query_ip_info("90.177.145.18", ip_info_key)
+    ip = request.remote_addr
 
+    if ip == "127.0.0.1":
+        ip = query_icanhazip().text.strip()
+
+    data = query_ip_info(ip, ip_info_key)
+
+    export_to_json(ip, "ip", session, session['user_hash'])
     export_to_json(data['loc'].split(','), "coordinates", session, session['user_hash'])
     export_to_json(data, "ip_info", session, session['user_hash'])
 
@@ -50,7 +55,8 @@ def ip_info():
 
 @app.route("/api/mapy_cz")
 def mapy_cz():
-    data_ip = query_ip_info("90.177.145.18", ip_info_key)
+    ip = load_from_json("ip", session, session['user_hash'])
+    data_ip = query_ip_info(ip, ip_info_key)
 
     session['coordinates'] = data_ip['loc'].split(',')
 
