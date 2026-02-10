@@ -1,17 +1,29 @@
+body {
+    min-height: 100vh; 
+    display: flex;
+    align-items: center;
+}
 
-.centered {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50% ,-50%);
+.card-container {
+    max-width: 1600px;
 }
 
 .fixed-card {
+    position: relative;
     width: 360px;
+    height: 400px;
 }
 
-.min-phone {
-    min-width: 360px;
+.fixed-card-body {
+    position: relative;
+    height: 320px;
+}
+
+.card-button-bottom {
+    position: absolute;
+    width: 95%;
+    align-self: center;
+    bottom: 10px;
 }
 
 .icon {

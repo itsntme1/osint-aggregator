@@ -13,7 +13,7 @@ export const schemaTable = {
 
 export function load() {
     return `
-        <div class="centered">
+        <div class="position-absolute top-50 start-50 translate-middle">
             <div class="loader">
             </div>
         </div>
@@ -22,7 +22,7 @@ export function load() {
 
 export function error() {
     return `
-        <div class="centered">
+        <div class="position-absolute top-50 start-50 translate-middle">
             <img class="w-100" src="/static/media/warning-icon.png">
             <p class="text-center fs-5 fw-semibold">Failed to load</p>
         </div>
@@ -136,7 +136,7 @@ export function disify(data) {
 
 function disifyError() {
     return `
-        <div class="centered">
+        <div class="position-absolute top-50 start-50 translate-middle">
             <img class="w-100" src="/static/media/email-icon.png">
             <p class="text-center fs-5 fw-semibold">No valid emails</p>
         </div>
@@ -152,7 +152,7 @@ export function maigret(data) {
             sitesData += `
                 <li class="list-group-item">
                     <p class="p-0 d-inline fw-semibold">${data[username][site]['site']}</p>
-                    <a class="float-end me-2" href="${data[username][site]['url']}">Link</a>
+                    <a class="float-end me-2 text-dark" href="${data[username][site]['url']}"><i class="bi bi-link-45deg"></i></a>
                 </li>
             `;
         }
@@ -223,7 +223,7 @@ export function xposedornot(data) {
 
 function xposedornotError() {
     return `
-        <div class="centered">
+        <div class="position-absolute top-50 start-50 translate-middle">
             <img class="w-100" src="/static/media/email-icon.png">
             <p class="text-center fs-5 fw-semibold">No breaches</p>
         </div>

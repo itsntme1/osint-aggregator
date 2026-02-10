@@ -7,36 +7,39 @@
 {% endblock head %}
 
 {% block body %}
-    <div class="centered w-25 min-phone">
-        <form action="/" method="post">
-            <div class="row mb-3">
-                <div class="col-12">
-                    <label for="name" class="form-label">Name</label>
-                    <input name="name" type="text" class="form-control" placeholder="John Doe">
+    <form action="/" method="post">
+        <div class="position-absolute top-50 start-50 translate-middle col-xxl-4 col-xl-6 col-lg-8 col-md-9 col-sm-10 col-12 px-2">
+            <div class="card border-dark shadow">
+                <div class="card-body">
+                    <div class="row mb-3 px-2">
+                        <label for="name" class="form-label fw-semibold">Name</label>
+                        <input name="name" type="text" class="form-control" placeholder="John Doe">
+                    </div>
+                    <div class="row mb-3 px-2">
+                        <label for="usernames" class="form-label fw-semibold">Usernames</label>
+                        <input name="usernames" type="text" class="form-control" placeholder="username1 username2 ...">
+                    </div>
+                    <div class="row mb-4 px-2">
+                        <label for="emails" class="form-label fw-semibold">Emails</label>
+                        <input name="emails" type="text" class="form-control" placeholder="user1@email.cz user2@email.cz ...">
+                    </div>
+                </div>
+                <div class="card-footer p-0">
+                    <div class="row">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-lg btn-dark w-100 rounded-bottom-1 rounded-top-0">
+                                <i class="bi bi-search me-2"></i>
+                                Search
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row mb-3">
-                <div class="col-12">
-                    <label for="usernames" class="form-label">Usernames</label>
-                    <input name="usernames" type="text" class="form-control" placeholder="username1 username2 ...">
-                </div>
-            </div>
-            <div class="row mb-4">
-                <div class="col-12">
-                    <label for="emails" class="form-label">Emails</label>
-                    <input name="emails" type="test" class="form-control" placeholder="user1@email.cz user2@email.cz ...">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <button type="submit" class="btn btn-lg btn-primary w-100"><i class="bi bi-search me-2"></i>Search</button>
-                </div>
-            </div>
-        </form>
-    </div>
+        </div>
+    </form>
 
     {% if error is not none() %}
-        <div class="alert alert-danger position-absolute bottom-0 start-50 translate-middle p-2 ps-4 pe-4 rounded-4">
+        <div class="alert bg-warning shadow border-dark position-absolute bottom-0 start-50 translate-middle p-2 px-4 rounded-4">
             <i class="bi bi-exclamation-circle-fill"></i>
             {{ error }}
         </div>
