@@ -55,6 +55,9 @@ def ip_info():
 
 @app.route("/api/mapy_cz")
 def mapy_cz():
+    # Wait for 'ip_info' route to export to json 
+    time.sleep(1)
+
     ip = load_from_json("ip", session, session['user_hash'])
     data_ip = query_ip_info(ip, ip_info_key)
 
@@ -189,6 +192,7 @@ def export():
             'usernames': json.dumps(session['usernames']),
             'emails': json.dumps(session['emails']),
             'ip_info': json.dumps(ip_info),
+            'map_location': json.dumps(f"export/{session['user_hash']}_map.png"),
             'coordinates': json.dumps(coordinates),
             'http_headers': json.dumps(http_headers),
             'disify': json.dumps(disify),

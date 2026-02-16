@@ -4,6 +4,7 @@
 #let usernames = json(bytes(data.usernames))
 #let emails = json(bytes(data.emails))
 #let ip-info = json(bytes(data.ip_info))
+#let map-location = json(bytes(data.map_location))
 #let coordinates = json(bytes(data.coordinates))
 #let http-headers = json(bytes(data.http_headers))
 #let disify = json(bytes(data.disify))
@@ -98,7 +99,7 @@
   )
 )
 
-#image("export/map.png")
+#image(map-location)
 
 == Maigret Lookup
 #for (username, sites) in maigret {
