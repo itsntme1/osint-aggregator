@@ -152,7 +152,7 @@ export function maigret(data) {
             sitesData += `
                 <li class="list-group-item">
                     <p class="p-0 d-inline fw-semibold">${data[username][site]['site']}</p>
-                    <a class="float-end me-2 text-dark" href="${data[username][site]['url']}"><i class="bi bi-link-45deg"></i></a>
+                    <a class="float-end me-2 text-dark" href="${data[username][site]['url']}" target="_blank"><i class="bi bi-link-45deg"></i></a>
                 </li>
             `;
         }
@@ -175,17 +175,15 @@ export function maigret(data) {
 }
 
 export function xposedornot(data) {
-    let breachExists = false
+    let breachExists = false;
     let outputData = "";
-
+    let breaches = "";
+    
     console.log(data)
-
+    
     for(let email in data) {
-        let breaches = "";
-
+        
         if(data[email]['Error'] == "Not found") {
-            breachExists = true;
-            
             continue;
         }
 
@@ -195,11 +193,11 @@ export function xposedornot(data) {
             breaches += `
                 <li class="list-group-item">
                     <p class="p-0 d-inline fw-semibold">${breachName}</p>
-                    <a class="float-end me-2" target="_blank" href="https://www.google.com/search?q=${breachName} breach">Link</a>    
+                    <a class="float-end me-2 text-dark" target="_blank" href="https://www.google.com/search?q=${breachName} breach"><i class="bi bi-link-45deg"></i></a>    
                 </li>
             `;
         }
-
+        
         outputData += `
             <li class="list-group-item">
                 <p class="fw-semibold">${email}</p>
@@ -208,9 +206,11 @@ export function xposedornot(data) {
                 </ul>
             </li>
         `;
+
+        breachExists = true;
     }
 
-    if(breachExists) {
+    if(!breachExists) {
         return xposedornotError();
     }
 
