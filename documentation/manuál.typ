@@ -1,3 +1,6 @@
+#import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
+#import fletcher.shapes: diamond
+
 #import "@preview/codly:1.3.0": *
 #show: codly-init
 
@@ -56,6 +59,9 @@
   size: 10pt,
   style: "italic"
 )
+
+// Links
+#show link: underline
 
 // Figures
 #show figure.caption: set text(
@@ -157,31 +163,78 @@ Mezi ostatní nástroje, které jsem použil patří Maigret a Wget. Aplikace po
 
 #pagebreak()
 = Praktická část
+Verze aplikace jsem spravoval přes nástroj Git a kód programu je k dispozici na stránce #link("https://github.com/itsntme1/osint-aggregator")[Github]. Pracoval jsem výhradně v editoru Vscode.
+
+== Přehleded souborů
+Zde je přehled důležitých souborů mého projektu. Z přehledu jsem vynechal soubory, které nejsou důležité pro fungování aplikace (například dočasné soubory, staré verze softwaru a soubory sloužící pro vybudování prostředí).
+
+#figure(
+  [
+    #codly(
+      header: [*Struktura projektu*],
+      zebra-fill: none
+    )
+    ```bash
+    ├── app.py
+    ├── export
+    ├── functions.py
+    ├── reports
+    ├── report.typ
+    ├── secret_keys.py
+    ├── static
+    │   ├── media
+    │   │   ├── email-icon.png
+    │   │   └── warning-icon.png
+    │   ├── script.js
+    │   ├── schemas.js
+    │   └── style.css
+    └── templates
+        ├── dashboard.html
+        ├── landing.html
+        ├── layout.html
+        └── macros.html
+    ```
+  ],
+  caption: [Přehled souborů]
+)
+
+Soubory s příponou ".py" jsou napsány v pythonu. Přípona ".js" značí javascript. Přípony ".html" a "css" značí sebe sama. Soubory končící na ".typ" obsahují typst a souboru bez koncovek jsou složkamy.
+
+== Implementace backendu
+Backend se nachází výhradně v souboru `app.py`. Spuštěním souboru pomocí python interpeteru se spustí samotná aplikace. 
+
+=== Server aplikace
+Stránka je spouštěna lokálně a není hostována na žádném serveru. Když je spuštěna běží na `localhost:5000`, kde si ji pomocí prohlížeče můžeme zobrazit.
+
+=== Endpointy
+
+
+=== Zpracování API dotazů
+=== Ukládání a zpracování dat
+
+== Implementace uživatelského rozhraní
+=== Struktura HTML šablon
+=== Dynamické načítání dat
+=== Stylování a responzivita
+
+== Integrace externích služeb
+=== Získávání IP adresy
+=== Zpracování OSINT dat
+=== Integrace dalších nástrojů
+
+== Generování reportu
+=== Příprava dat pro report
+=== Generování dokumentu pomocí Typst
+=== Export výsledků
 
 #pagebreak()
 = Vyhodnocení
+Se svou prací nejsem vůbec spokojen. Kdybych měl tu možnost udělat ji znovu rozhodně bych systém načítání dat přes frontend tlačítko. Byl to špatný nápad. Všechny informace bych začal shánět a načítat hned po té co je uživatel zadá do formuláře a vše by bylo nezávislé na frontendu. Dále bych se pokusil změnit například HTML kód, který mám v javascript stringu.
+
+Celkově jsem spokojený s funkčností mojí práce, ale změnil bych provedení. I když bych mohl přidat třeba zjišťování lokace uživatele nezávislé na ip adrese.
 
 #pagebreak()
 = Další
-
-#pagebreak()
-= Testing
-asd#footnote()[fghd]
-
-
-#codly(
-  header: [*Test*],
-  offset: 33,
-  zebra-fill: none,
-)
-```python
-@app.route("/dashboard")
-def dashboard():
-    if not session['name'] or not session['usernames'] or not session['emails']:
-        return redirect("/")
-
-    return render_template("dashboard.html")
-```
 
 #pagebreak()
 = Závěr <unnumbered>
