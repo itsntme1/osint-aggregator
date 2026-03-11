@@ -205,10 +205,6 @@ def export():
         sys_inputs=data
     )
 
-    # Remove files
-    for file in os.listdir("export"):
-        os.remove(f"export/{file}")
-
     return send_file(f"reports/{session['name']}_report.pdf", as_attachment=False)
 
 if __name__ == "__main__":

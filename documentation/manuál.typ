@@ -210,12 +210,76 @@ Stránka je spouštěna lokálně a není hostována na žádném serveru. Když
 === Endpointy
 #callout("Endpoint")[Podadresa domény, kde je uživateli servírována stránka \ (například `ww.stranka.com/landing` nebo `www.stranka.com/dashboard`).]
 
-Stránka má dva endpointy důležité pro uživatele "/", který slouží pro vyhledávání a jako přistávací endpoint, a "/dashboard", který slouží pro zobrazování dat.
+Stránka má dva endpointy důležité pro uživatele "/", který slouží pro vyhledávání a jako přistávací endpoint, a "/dashboard", který slouží pro zobrazování dat. Dále má stránka 8 endpointů interních API, kde dochází k získávání a formátování dat.
 
-Dále má stránka 8 endpointů interních API. Které více rozeberu v sekci *TODO*.
+=== Zpracování API dotazů <api-request-handling>
 
-=== Zpracování API dotazů
-Vysvětlit jak funguje `query` a funkce okolo
+Nejdříve je požadavek spuštěn z frontendové části funkce funkcí, kde funkce `loadData()` spustí odpovídající cestu #footnote()[Pojem Flasku. V podstatě se jedná o to, co se stane, když je požádáno o endpoint stránky.], určenou argumentem `endpoint` v makru `card()`. Cesta požádá o data z externí API a přeformátuje je. Data jsou nakonec dosazena do schématu podle tabulky `schemaTable` a zobrazena uživately.
+
+#figure(
+  [
+    #codly(
+      header: [*functions.py*],
+      zebra-fill: none,
+      offset: 8
+    )
+    ```python
+    def query_api(endpoint: str, headers=None, timeout: int=5):
+      try:
+        response = requests.get(endpoint, headers=headers, timeout=timeout)
+
+        if response.status_code != 200:
+          print(f"Endpoint: {endpoint}")
+          print(f"Headers: {headers}")
+          print(f'Response: {response.text}')
+          print(f"Status code: {response.status_code}")
+
+      except Exception as error:
+        print(f"query_api: {error}")
+      try:
+        return response.json()
+      except:
+        return response
+    ```
+  ],
+  caption: [Funkce `query_api()`]
+)
+
+Implementuji mnoho funkcí okolo `query_api()`, ale všechny pouze mění formát požadavku.
+
+Většinou do nich dodávám nějaký vyhledávací parametr.
+
+#figure(
+  [
+    #codly(
+      header: [*functions.py*],
+      zebra-fill: none,
+      offset: 34
+    )
+    ```python
+    def query_xposedornot(email: str):
+      return query_api(f"https://api.xposedornot.com/v1/check-email/{email}")
+    ```
+  ],
+  caption: [Funkce `query_exposedornot()`]
+)
+
+Občas k nim musím do hlavičky nebo jiné části adresy přidat také tajný API klíč #footnote()[Také se mu říká token.]. Klíče jsou uloženy v souboru `secret_keys.py`, který je ignorován nástrojem Git.
+
+#figure(
+  [
+    #codly(
+      header: [*functions.py*],
+      zebra-fill: none,
+      offset: 34
+    )
+    ```python
+    def query_ip_info(ip: str, token: str):
+      return query_api(f"https://ipinfo.io/{ip}", {"Authorization": f"Bearer {token}"})
+    ```
+  ],
+  caption: [Funkce `query_ip_info()`]
+)
 
 == Implementace uživatelského rozhraní
 === Struktura HTML šablon
@@ -231,15 +295,15 @@ Pro generování stránek byl použit systém Jinja2, který je součástí Flas
     <!DOCTYPE html>
     <html lang="en">
     <head>
-        {% block head %}
-            <!-- Irelevantní kód -->
+      {% block head %}
+        <!-- Irelevantní kód -->
 
-        {% endblock head %}
+      {% endblock head %}
     </head>
     <body>
-        {% block body %}
+      {% block body %}
 
-        {% endblock body %}
+      {% endblock body %}
     </body>
     </html>
     ```
@@ -259,19 +323,19 @@ V rodičovské šabloně jsou deklarovány bloky `head` a `body` do kterých mů
     {% extends "layout.html" %}
 
     {% block head %}
-        {{ super() }}
+      {{ super() }}
         
     {% endblock head %}
 
     {% block body %}
-        <form action="/" method="post">
-            <!-- kód pro vyhledávací formulář -->
-        </form>
+      <form action="/" method="post">
+        <!-- kód pro vyhledávací formulář -->
+      </form>
 
-        {% if error is not none() %}
-            <!-- kód pro stylování chyby -->
-                {{ error }}
-        {% endif %}
+      {% if error is not none() %}
+        <!-- kód pro stylování chyby -->
+          {{ error }}
+      {% endif %}
     {% endblock body %}
     ```
   ],
@@ -289,17 +353,17 @@ V dětské šabloně můžeme použít funkci `super()`, která do ní doplní o
     ```html
     {% macro card(title, endpoint, schema) %}
     <div class="card fixed-card shadow border-dark" data-title="{{ title }}" data-endpoint="{{ endpoint }}" data-schema="{{ schema }}">
-        <div class="card-header bg-dark shadow">
-            <p class="m-0 fs-5 fw-semibold d-inline text-white">{{ title }}</p>
-            <button class="btn btn-dark btn-lg m-0 p-0 px-1 float-end" data-reload>
-                <i class="bi bi-arrow-repeat text-white"></i>
-            </button>
+      <div class="card-header bg-dark shadow">
+        <p class="m-0 fs-5 fw-semibold d-inline text-white">{{ title }}</p>
+        <button class="btn btn-dark btn-lg m-0 p-0 px-1 float-end" data-reload>
+          <i class="bi bi-arrow-repeat text-white"></i>
+        </button>
+      </div>
+      <div class="card-body fixed-card-body p-0 overflow-y-scroll rounded" data-display>
+        <div class="position-absolute top-50 start-50 translate-middle">
+          <div class="loader"></div>
         </div>
-        <div class="card-body fixed-card-body p-0 overflow-y-scroll rounded" data-display>
-            <div class="position-absolute top-50 start-50 translate-middle">
-                <div class="loader"></div>
-            </div>
-        </div>
+      </div>
     </div>
     {% endmacro %}
     ```
@@ -321,24 +385,24 @@ Dále používám makra, která bych popsal jako funkce pro HTML. Funkci můžem
     {% extends "layout.html" %}
 
     {% block head %}
-        {{ super() }}
+      {{ super() }}
 
-        <!-- kód pro importování javascriptu -->
+      <!-- kód pro importování javascriptu -->
     {% endblock head %}
 
     {% block body %}
     <div class="container-fluid py-3 w-100 card-container">
-        < class="d-flex flex-wrap gap-3 justify-content-center">
-            {{ card("IPinfo.io", "/api/ip_info", "ipInfo") }}
-            {{ card("HTTP Headers", "/api/http_headers", "httpHeaders") }}
-            {{ card("Mapy.com", "/api/mapy_cz", "mapyCz") }}
-            {{ card("Disify", "/api/disify", "disify") }}
-            {{ card("Maigret", "/api/maigret", "maigret") }}
-            {{ card("XposedOrNot", "/api/xposedornot", "xposedornot")}}
-            {{ card("Name Info", "/api/name_info", "nameInfo") }}
+      < class="d-flex flex-wrap gap-3 justify-content-center">
+        {{ card("IPinfo.io", "/api/ip_info", "ipInfo") }}
+        {{ card("HTTP Headers", "/api/http_headers", "httpHeaders") }}
+        {{ card("Mapy.com", "/api/mapy_cz", "mapyCz") }}
+        {{ card("Disify", "/api/disify", "disify") }}
+        {{ card("Maigret", "/api/maigret", "maigret") }}
+        {{ card("XposedOrNot", "/api/xposedornot", "xposedornot")}}
+        {{ card("Name Info", "/api/name_info", "nameInfo") }}
 
-            <!-- kód pro sekci O Programu -->
-        </div>
+        <!-- kód pro sekci O Programu -->
+      </div>
     </div>
     {% endblock body %}
     ```
@@ -348,27 +412,287 @@ Dále používám makra, která bych popsal jako funkce pro HTML. Funkci můžem
 
 Ve finální podobě bude HTML kód stránky vypadat tak, že pokud uživatel požádá například o enpoint `/dashboard`, tak dostane soubor spojen s maker a šablony `dashboard.html` a jeho rodiče `layout.html`.
 
-=== Dynamické načítání dat
-Vysvětlit loadData funkce a systém schémat
+=== Načítání dat
+Nejdůležitější funkce pro načítání dat je funkce `loadData()` v souboru `static/script.js`, který se stará o všechen frontend kód.
 
-=== Stylování a responzivita
-Vysvětlit bootstrap a moje styly
+#figure(
+  [
+    #codly(
+      header: [*static/script.js*],
+      zebra-fill: none,
+      offset: 3
+    )
+    ```js
+    async function loadData(element) {
+      try {
+        const endpoint = element.closest("[data-endpoint]").dataset.endpoint;
+        const schema = element.closest("[data-schema]").dataset.schema;
+        
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        
+        element.innerHTML = await schemaTable[schema](data);
+      }
+      catch (error) {
+        console.log(error)
+
+        element.innerHTML = schemaTable['error']();
+      }
+    }
+    ```
+  ],
+  caption: [Funkce loadData()]
+)
+
+Funkce bere `element`, kterým je plocha pro obsah karty. Podívá se na svoje rodičovské prvky a načte z nich proměné data-endpoint a data-schema (V HTML můžeme deklarovat vlastní atributy s pomocí předpony `data-`, což já s pomocí jinja2  a maker využívám jako proměné). Zavolá funkci `fetch()` s proměnou endpoint jako parametrem a výsledek přiřadí do proměné data. Podívá se na mapu `schemaTable` a do HTML prvku vloží správný obsah podle schématu a dat získaných z endpointu.
+
+Pokud se v průběhu funkce stane chyba, do HTML prvku je vloženo schéma pro chybu.
+
+Ve funkci se vyskytují klíčová slova `await`, která ve spojení s `async` před funkcí způsobí, že program na daném řádku počká na výsledek, než bude postupovat dál."
+
+V souboru `static/script.js` jsou další funkce, které fungují okolo `loadData()`:
+
+- *reloadData():* Spustí se při stisknutí tlačítka obnovit a zavolá `loadData()` pro svoji kartu.
+- *initialLoadData():* Spustí se při načtení dokumentu a zavolá `loadData()` pro všechny karty.
+- *assignReloadData():* Spustí se při načtení dokumentu a přiřadí `reloadData()` ke všem tlačítkům obnovit.
+
+=== Schémata
+Funkce `loadData()` se rozhodne podle `schemaTable`, kterou funkci má zavolat.
+
+#figure(
+  [
+    #codly(
+      header: [*static/schemas.js*],
+      zebra-fill: none,
+      offset: 1
+    )
+    ```js
+    export const schemaTable = {
+      'load': load,
+      'error': error,
+      'ipInfo': ipInfo,
+      'mapyCz': mapyCz,
+      'httpHeaders': httpHeaders,
+      'disify': disify,
+      'maigret': maigret,
+      'xposedornot': xposedornot,
+      'nameInfo': nameInfo
+    };
+    ```
+  ],
+  caption: [Hašovací tabulka `schemaTable`]
+)
+
+#callout("JSON")[JSON je zkratka pro "javascript object notation" a populární formát pro přenos dat mezi jazyky a službamy.]
+
+Každá funkce vrátí HTML jako string a funkce `loadData()` ho dosadí na správné místo do karty. Funkce přijímají jako argument jsonová data, které do stringu dosazují.
+
+#figure(
+  [
+    #codly(
+      header: [*static/schemas.js*],
+      zebra-fill: none,
+      offset: 232
+    )
+    ```js
+    export function nameInfo(data) {
+      return `
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <p class="d-inline fw-semibold">Name:</p>
+            <p class="float-end m-0">${data.name}</p>
+          </li>
+          <li class="list-group-item">
+            <p class="d-inline fw-semibold">Gender:</p>
+            <p class="float-end m-0">${data.gender} (${data.gender_probability}% sure)</p>
+          </li>
+          <li class="list-group-item">
+            <p class="d-inline fw-semibold">Age:</p>
+            <p class="float-end m-0">${data.age}</p>
+          </li>
+          <li class="list-group-item">
+            <p class="d-inline fw-semibold">Country:</p>
+            <p class="float-end m-0">${data.country} (${data.country_probability}% sure)</p>
+          </li>
+        </ul>
+      `;
+    }
+    ```
+  ],
+  caption: [Funkce `nameInfo()`]
+)
+
+Některá schémata také obsahují logiku pro lepší formátování. Například schéma `Maigret`.
+
+#figure(
+  [
+    #codly(
+      header: [*static/schemas.js*],
+      zebra-fill: none,
+      offset: 145
+    )
+    ```js
+    export function maigret(data) {
+      let outputData = "";
+      let sitesData = "";
+
+      for(let username in data) {
+        for(let site in data[username]) {
+          sitesData += `
+            <li class="list-group-item">
+              <p class="p-0 d-inline fw-semibold">${data[username][site]['site']}</p>
+              <a class="float-end me-2 text-dark" href="${data[username][site]['url']}" target="_blank"><i class="bi bi-link-45deg"></i></a>
+            </li>
+          `;
+        }
+
+        outputData += `
+          <li class="list-group-item">
+            <p class="fw-bold">${username}</p>
+            <ul class="list-group">
+              ${sitesData}
+            </ul>
+          </li>
+        `;
+      }
+
+      return `
+        <ul class="list-group list-group-flush">
+          ${outputData}
+        </ul>
+      `;
+    }
+    ```
+  ],
+  caption: [Funkce `disify()`]
+)
+
+Toto schéma používá cykly a podmínky, aby vytvořilo list úniků pro každý email a kontrolovalo, jesli byli vůbec nějaké úniky nalezeny.
+
+Dále jsou tu speciální schémata `load`, `error`, `disifyError` a `xposedornotError`, které nevyžadují žádné argumenty a pouze vrací animaci, nebo zprávu o chybě.
+
+=== Stylování
+Ke stylování používám většinou knihovnu Bootstrap. Mám ale v souboru `static/style.css` pár vlastních stylů, které slouží, pro drobné úpravy pozic, velikostí a načítací animaci pro karty.
+
+Bootstrap funguje pomocí CSS tříd, které se dosazují do HTML prvku.
+
+Jednou z nejdůležitějších funkcí Bootstrapu je systém breakpointů. Breakpoint má 3 hlavní části. První část uvádí vlastnost, kterou upravujeme. Druhá část specifikuje šířku obrazovky, pokud je nižší, tak se aplikuje nižší breakpoint pokud je specifikován. Třetí část specifikuje šířku prvku od 1 do 12 (maximální délka je rozdělena do 12 dílů). Například `column-12 column-lg-4` bude mít 1 sloupec na řadu na malých obrazovkách a 3 na velkých. Systém je obzvlášť užitečný pro design, který má vypadat dobře na mobilním telefonu i počítači zároveň.
+
+Je tu mnoho dalších funkcí.
+
+#figure(
+  [
+    #codly(
+      header: [*templates/landing.html*],
+      zebra-fill: none,
+      offset: 9
+    )
+    ```html
+    <div class="card border-dark shadow">
+      <div class="card-body">
+        <div class="row mb-3 px-2">
+          <label for="name" class="form-label fw-semibold">Name</label>
+          <input name="name" type="text" class="form-control" placeholder="John Doe">
+        </div>
+        <div class="row mb-3 px-2">
+          <label for="usernames" class="form-label fw-semibold">Usernames</label>
+          <input name="usernames" type="text" class="form-control" placeholder="username1 username2 ...">
+        </div>
+        <div class="row mb-4 px-2">
+          <label for="emails" class="form-label fw-semibold">Emails</label>
+          <input name="emails" type="text" class="form-control" placeholder="user1@email.cz user2@email.cz ...">
+        </div>
+      </div>
+
+      <!-- kód pro vyhledávací tlačítko -->
+    </div>
+    ```
+  ],
+  caption: [Formulář pro vyhledávání]
+)
+
+Například třída `card` používá stylování pro bootstrap komponent karty. Třída `shadow` aplikuje na prvek černý stín, `border-dark` vytváří černý okraj a `form-control` přidává stylování pro pole formulářů.
 
 == Integrace externích služeb
-=== Tok dat
-Frontend request na interní API -> request na externí api -> zpracování dat -> formátování dat
+=== Práce s daty
+Když je zavolána cesta spustí se její funkce v `app.py`. Nachází se cesta pro každou interní API. Cesta je volána z frontendu.
 
-=== Zpracování OSINT dat
-Vysvětlit pár cest v app.py
+#figure(
+  [
+    #codly(
+      header: [*app.py*],
+      zebra-fill: none,
+      offset: 137
+    )
+    ```python
+    @app.route("/api/xposedornot")
+    def xposedornot():
+      data = {}
 
-=== Integrace dalších nástrojů
-Maigret, Wget
+      for email in session['emails']:
+        xposedornot_data = query_xposedornot(email)
+
+        data[email] = xposedornot_data
+
+        # This is here to avoid rate limits
+        time.sleep(1)
+
+      export_to_json(data, "xposedornot", session, session['user_hash'])
+
+      return data
+    ```
+  ],
+  caption: [Cesta interní API pro xposedornot]
+)
+
+Dekorátor `@app.route()` přiřadí k cestě endpoint. Pro interní API `xposedornot` je odhalen endpoint `/api/exposedornot`. Dále se pro každý email, který byl zadán do vyhledávacího formuláře a uložen v cookies, získají data z externí API. Mezi požadavky musí být nějaký interval, aby se zamezilo zablokování kvůli DDOS ochraně. Data jsou exportována do složky `export`.
+
+#figure(
+  [
+    #codly(
+      header: [*functions.py*],
+      zebra-fill: none,
+      offset: 58
+    )
+    ```python
+    def export_to_json(variable, name, session, user_hash):
+      with open(f"export/{user_hash}_{name}.json", "w") as file:
+        json.dump(variable, file)
+    ```
+  ],
+  caption: [Funkce `export_to_json()`]
+)
+
+Funkce uloží data do souboru typu JSON a pojmenuje ho podle uživatelkého hashe a názvu služby. Hash je vytvořen pomocí hashovací funkce, která jako argument bere uživatelovo jméno, přezdívky a emaily. Tato metoda vytvoří číslo unikátní pro argumenty funkce, což umožní pracovat s daty pro více uživatelů současně.
+
+Existují také funkce `load_from_json()` a `load_report()`, které se starají o načítání dat z JSONu.
+
+=== Wget
+Wget je použit pouze pro stažený statické mapy z "mapy.com".
+
+=== Maigret
+Nástroj Maigret slouží pro vyhledávání daných uživatelský jmen na známích službách. Je spoušten pomocí vestavěné pythonové funkce `subprocess.run()`, jehož výsledkem je vytvoření zprávy a její následné uložení do složky `reports`.
+
+#figure(
+  [
+    #codly(
+      header: [*functions.py*],
+      zebra-fill: none,
+      offset: 58
+    )
+    ```python
+    def run_maigret(username: str):
+      arguments = ["maigret", "--no-recursion", "--json", "simple"]
+      arguments.extend([username])
+
+      subprocess.run(arguments)
+    ```
+  ],
+  caption: [Funkce `run_maigret()`]
+)
 
 == Generování reportu
-=== Příprava dat pro report 
-Napsat o json systému a user_hashy
-
-=== Generování dokumentu pomocí Typst
+=== Vytváření dokumentu pomocí jazyka Typst
 Vysvětlit `report.typ` dokument a základy Typstu
 
 === Export výsledků

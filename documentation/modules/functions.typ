@@ -1,7 +1,5 @@
-#let callout(title, body) = (
-  box(
+#let callout(title, body) = box(
     stroke: 1pt,
     inset: 8pt,
     radius: 4pt,
-  )[*#title:* #body]
-)
+)[*#title:* #body]
