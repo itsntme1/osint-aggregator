@@ -98,12 +98,12 @@
 
 #pagebreak()
 = Úvod <unnumbered>
-Žijeme ve věku informací. Data o nás jsou sbírána a prodávána, ať už chceme nebo ne. Proto jsem se rozhodl vytvořit stránku/nástroj, který shromáždí některé z veřejně dostupných informací #footnote[V angličtině se používá pojem "OSINT"] o uživateli a podá mu je v přehledné formě. Práci jsem se rozhodl vypracovat v angličtině, jelikož ji všechy mé zdroje dat používají, a kdybych ji nepoužil došlo by k nehezkému míchání.
+Žijeme ve věku informací. Data o nás jsou sbírána a prodávána, ať už chceme nebo ne. Proto jsem se rozhodl vytvořit stránku/nástroj, který shromáždí některé z veřejně dostupných informací #footnote[V angličtině se používá pojem "OSINT"] o uživateli a podá mu je v přehledné formě. Práci jsem se rozhodl vypracovat v angličtině, jelikož ji všechny mé zdroje dat používají, a kdybych ji nepoužil, došlo by k nehezkému míchání.
 
 #pagebreak()
 = Teoretická část
 == Použité technologie
-Při vývoji aplikace jsem většinou vycházel z dokumentace jednotlivých technologií. Použil jsem pár ikon z web z webu "flaticon.com" @Flaticons a pár z ikonového fontu knihovny Bootstrap @BootstrapIcons.
+Při vývoji aplikace jsem většinou vycházel z dokumentace jednotlivých technologií. Použil jsem pár ikon z webu "flaticon.com" @Flaticons a pár z ikonového fontu knihovny Bootstrap @BootstrapIcons.
 
 === Jazyky
 Základ mé aplikace tvoří Python, s pomocí kterého jsem napsal základní fungování stránky a zpracovával jsem získaná data. JavaScript @JavaScriptDocs jsem využil k přidání reaktivity (tlačítka) a načitání zpracovaných dat. HTML @W3SchoolsHTML používám na strukturu stránky. Čisté CSS @W3SchoolsCSS používám pouze na malé úpravy a animace.
@@ -115,7 +115,7 @@ Základ mé aplikace tvoří Python, s pomocí kterého jsem napsal základní f
 
     [Python],[Základní fungování stránky a zpracování dat],
     [JavaScript],[Reaktivita uživatelské části aplikace a zobrazení dat],
-    [Typst],[Generovavání PDF shrnutí a získaných dat],
+    [Typst],[Generování PDF shrnutí a získaných dat],
     [HTML],[Základní struktura a obsah stránky],
     [CSS],[Pár vlastních stylů a animací]
   ),
@@ -137,14 +137,14 @@ Pro zjednodušení vývoje jsem využil několik populárních knihoven a framew
   caption: [Externí knihovny]
 )
 === Externí API
-Externí API tvoří většinu zdrojů z kterých získávám data. Informace z nich získávám pomocí standardního GET requestu nebo nástroje Wget.
+Externí API tvoří většinu zdrojů, z kterých získávám data. Informace z nich získávám pomocí standardního GET requestu nebo nástroje Wget.
 
 #figure(
   table(
     columns: (auto, 1fr),
-    table.header([Externí API],[Typy dat použitých dat]),
+    table.header([Externí API],[Typy použitých dat]),
     
-    [icanhazip.com @Icanhazip],[Ip adresa],
+    [icanhazip.com @Icanhazip],[IP adresa],
     [ipinfo.io @IpInfo],[Časová zóna, země, region, město, ZIP kód a souřadnice],
     [disify.com @Disify],[Doména, validita a disposabilita],
     [xposedornot.com @Xposedornot],[Název úniku],
@@ -156,7 +156,7 @@ Externí API tvoří většinu zdrojů z kterých získávám data. Informace z 
 )
 
 === Ostatní nástroje
-Mezi ostatní nástroje, které jsem použil patří Maigret @Maigret a Wget @Wget. Aplikace používá Maigret i Wget lokálně nepotřebuje se připojovat přes žádnou externí API. Maigret je nástroj na vyhledávání uživatelovy přezdívky na populárních sítích a službách. Může však najít falešná pozitiva. Tento problém se mi nepodařilo vyřešit a přetrvává i u podobných nástrojů. Wget je malý nástroj na stahování obrázků.
+Mezi ostatní nástroje, které jsem použil, patří Maigret @Maigret a Wget @Wget. Aplikace používá Maigret i Wget lokálně a nepotřebuje se připojovat přes žádnou externí API. Maigret je nástroj na vyhledávání uživatelských přezdívek na populárních sítích a službách. Může však najít falešná pozitiva. Tento problém se mi nepodařilo vyřešit a přetrvává i u podobných nástrojů. Wget je malý nástroj na stahování obrázků.
 
 #figure(
   table(
@@ -171,7 +171,7 @@ Mezi ostatní nástroje, které jsem použil patří Maigret @Maigret a Wget @Wg
 
 #pagebreak()
 = Praktická část
-Verze aplikace jsem spravoval přes nástroj Git a kód programu je k dispozici na stránce #link("https://github.com/itsntme1/osint-aggregator")[GitHub]. Pracoval jsem výhradně v editoru Vscode.
+Verze aplikace jsem spravoval přes nástroj Git a kód programu je k dispozici na stránce #link("https://github.com/itsntme1/osint-aggregator")[GitHub]. Pracoval jsem výhradně v editoru VS Code.
 
 == Přehled projektu
 === Přehled souborů
@@ -227,10 +227,10 @@ Backend se nachází výhradně v souboru `app.py`. Spuštěním souboru pomocí
 Stránka je spouštěna lokálně a není hostována na veřejném serveru. Když je spuštěna, běží na `localhost:5000`, kde si ji pomocí prohlížeče můžeme zobrazit.
 
 === Endpointy
-Stránka má dva endpointy #footnote[Podadresa domény, kde je uživateli servírována stránka \ (například `ww.stranka.com/landing` nebo `www.stranka.com/dashboard`).] důležité pro uživatele `/`, který slouží pro vyhledávání a jako přistávací endpoint, a `/dashboard`, který slouží pro zobrazování dat. Dále má stránka 8 endpointů interních API, kde dochází k získávání a formátování dat.
+Stránka má dva endpointy #footnote[Podadresa domény, kde je uživateli servírována stránka \ (například `www.stranka.com/landing` nebo `www.stranka.com/dashboard`).] důležité pro uživatele `/`, který slouží pro vyhledávání a jako přistávací endpoint, a `/dashboard`, který slouží pro zobrazování dat. Dále má stránka 8 endpointů interních API, kde dochází k získávání a formátování dat.
 
 === Zpracování API dotazů <api-request-handling>
-Nejdříve je požadavek spuštěn z frontendové části funkce funkcí, kde funkce `loadData()` spustí odpovídající cestu #footnote[Pojem Flasku. V podstatě se jedná o to, co se stane, když je požádáno o endpoint stránky.], určenou argumentem `endpoint` v makru `card()`. Cesta požádá o data z externí API a přeformátuje je. Data jsou nakonec dosazena do schématu podle tabulky `schemaTable` a zobrazena uživateli.
+Nejdříve je požadavek spuštěn z frontendové části aplikace, kde funkce `loadData()` spustí odpovídající cestu #footnote[Pojem Flasku. V podstatě se jedná o to, co se stane, když je požádáno o endpoint stránky.], určenou argumentem `endpoint` v makru `card()`. Cesta požádá o data z externí API a přeformátuje je. Data jsou nakonec dosazena do schématu podle tabulky `schemaTable` a zobrazena uživateli.
 
 #figure(
   [
@@ -359,7 +359,7 @@ V rodičovské šabloně jsou deklarovány bloky `head` a `body` do kterých mů
   caption: [Příklad fungování dětské šablony]
 ) <landing-jinja>
 
-V dětské šabloně můžeme použít funkci `super()`, která do ní doplní obsah rodičovaské šablony v jejím bloku. Dále pomocí flasku můžeme pomocí flasku vkládat proměnné a provádět s nimi operace. Například ve @landing-jinja vložím proměnnou `error` pokud se nepovede vyhledávání a ona se zobrazí na stránce, pokud má nějaký obsah.
+V dětské šabloně můžeme použít funkci `super()`, která do ní doplní obsah rodičovské šablony v jejím bloku. Dále pomocí Flasku můžeme vkládat proměnné a provádět s nimi operace. Například ve @landing-jinja vložím proměnnou `error` pokud se nepovede vyhledávání a ona se zobrazí na stránce, pokud má nějaký obsah.
 
 #figure(
   [
@@ -389,7 +389,7 @@ V dětské šabloně můžeme použít funkci `super()`, která do ní doplní o
   caption: [Implementace makra pro karty]
 )
 
-Dále používám makra, která bych popsal jako funkce pro HTML. Funkci můžeme dát proměnné, které budou doplněni přímo do kódu. Funkce můžeme v jiném templatu, když je importujeme (například takto `{% from 'macros.html' import card %}`).
+Dále používám makra, která bych popsal jako funkce pro HTML. Funkci můžeme dát proměnné, které budou doplněny přímo do kódu. Funkce můžeme v jiném templatu, když je importujeme (například takto `{% from 'macros.html' import card %}`).
 
 #figure(
   [
@@ -429,7 +429,7 @@ Dále používám makra, která bych popsal jako funkce pro HTML. Funkci můžem
   caption: [Použití karet]
 )
 
-Ve finální podobě bude HTML kód stránky vypadat tak, že pokud uživatel požádá například o enpoint `/dashboard`, tak dostane soubor spojen s maker a šablony `dashboard.html` a jeho rodiče `layout.html`.
+Ve finální podobě bude HTML kód stránky vypadat tak, že pokud uživatel požádá například o endpoint `/dashboard`, tak dostane soubor spojen s makry, šablony `dashboard.html` a jeho rodiče `layout.html`.
 
 === Načítání dat
 Nejdůležitější funkce pro načítání dat je funkce `loadData()` v souboru `static/script.js`, který se stará o všechen frontend kód.
@@ -584,7 +584,7 @@ Některá schémata také obsahují logiku pro lepší formátování. Napříkl
   caption: [Funkce `maigret()`]
 )
 
-Toto schéma používá cykly a podmínky, aby vytvořilo list úniků pro každý email a kontrolovalo, jesli byli vůbec nějaké úniky nalezeny.
+Toto schéma používá cykly a podmínky, aby vytvořilo list úniků pro každý email a kontrolovalo, jestli byly vůbec nějaké úniky nalezeny.
 
 Dále jsou tu speciální schémata `load`, `error`, `disifyError` a `xposedornotError`, které nevyžadují žádné argumenty a pouze vrací animaci, nebo zprávu o chybě.
 
@@ -593,7 +593,7 @@ Ke stylování používám většinou knihovnu Bootstrap. Mám ale v souboru `st
 
 Bootstrap funguje pomocí CSS tříd, které se dosazují do HTML prvku.
 
-Jednou z nejdůležitějších funkcí Bootstrapu je systém breakpointů. Breakpoint má 3 hlavní části. První část uvádí vlastnost, kterou upravujeme. Druhá část specifikuje šířku obrazovky, pokud je nižší, tak se aplikuje nižší breakpoint pokud je specifikován. Třetí část specifikuje šířku prvku od 1 do 12 (maximální délka je rozdělena do 12 dílů). Například `column-12 column-lg-4` bude mít 1 sloupec na řadu na malých obrazovkách a 3 na velkých. Systém je obzvlášť užitečný pro design, který má vypadat dobře na mobilním telefonu i počítači zároveň.
+Jednou z nejdůležitějších funkcí Bootstrapu je systém breakpointů. Breakpoint má 3 hlavní části. První část uvádí vlastnost, kterou upravujeme. Druhá část specifikuje šířku obrazovky, pokud je nižší, aplikuje se nižší breakpoint, pokud je specifikován. Třetí část specifikuje šířku prvku od 1 do 12 (maximální délka je rozdělena do 12 dílů). Například `column-12 column-lg-4` bude mít 1 sloupec na řadu na malých obrazovkách a 3 na velkých. Systém je obzvlášť užitečný pro design, který má vypadat dobře na mobilním telefonu i počítači zároveň.
 
 Je tu mnoho dalších funkcí.
 
@@ -632,7 +632,7 @@ Například třída `card` používá stylování pro bootstrap komponent karty.
 
 == Integrace externích služeb
 === Práce s daty
-Když je zavolána cesta spustí se její funkce v `app.py`. Nachází se cesta pro každou interní API. Cesta je volána z frontendu.
+Když je zavolána cesta, spustí se její funkce v `app.py`. Nachází se cesta pro každou interní API. Cesta je volána z frontendu.
 
 #figure(
   [
@@ -688,7 +688,7 @@ Existují také funkce `load_from_json()` a `load_report()`, které se starají 
 Wget je použit pouze pro stažení statické mapy z "mapy.com".
 
 === Maigret
-Nástroj Maigret slouží pro vyhledávání daných uživatelský jmen na známých službách. Je spoušten pomocí vestavěné pythonové funkce `subprocess.run()`, jehož výsledkem je vytvoření zprávy a její následné uložení do složky `reports`.
+Nástroj Maigret slouží pro vyhledávání daných uživatelských jmen na známých službách. Je spouštěn pomocí vestavěné pythonové funkce `subprocess.run()`, jehož výsledkem je vytvoření zprávy a její následné uložení do složky `reports`.
 
 #figure(
   [
@@ -710,7 +710,7 @@ Nástroj Maigret slouží pro vyhledávání daných uživatelský jmen na znám
 
 == Generování reportu
 === Vytváření reportu
-Export se odehrává v cestě `/export`. Nejdříve se stáhne mapa a načtou se data z JSON souborů uložených ve složce `export`. Všechna data se uloží do jednoho objektu a ten se podá funkci na kompilaci souboru, která pochází z pythonového modulo pro Typst.
+Export se odehrává v cestě `/export`. Nejdříve se stáhne mapa a načtou se data z JSON souborů uložených ve složce `export`. Všechna data se uloží do jednoho objektu a ten se podá funkci na kompilaci souboru, která pochází z pythonového modulu pro Typst.
 
 #figure(
   [
@@ -843,13 +843,13 @@ Můžeme také používat cykly.
 
 #pagebreak()
 = Vyhodnocení
-Se svou prací nejsem spokojen. Kdybych měl tu možnost udělat ji znovu rozhodně bych systém načítání dat přes frontend tlačítko. Byl to špatný nápad. Všechny informace bych začal shánět a načítat hned po té co je uživatel zadá do formuláře a vše by bylo nezávislé na frontendu. Dále bych se pokusil změnit například HTML kód, který mám v javascript stringu.
+Se svou prací nejsem spokojen. Kdybych měl možnost udělat ji znovu, rozhodně bych změnil systém načítání dat přes frontend tlačítko. Byl to špatný nápad. Všechny informace bych začal shánět a načítat hned poté, co je uživatel zadá do formuláře, a vše by bylo nezávislé na frontendu. Dále bych se pokusil změnit například HTML kód, který mám v javascriptovém stringu.
 
-Celkově jsem spokojený s funkčností mojí práce, ale změnil bych provedení. Mohl bych také přidat například zjišťování lokace uživatele nezávisle na ip adrese.
+Celkově jsem spokojený s funkčností mojí práce, ale změnil bych provedení. Mohl bych také přidat například zjišťování lokace uživatele nezávisle na IP adrese.
 
 #pagebreak()
 = Závěr <unnumbered>
-Tvorbu práce jsem si celkem užil a můžu říci, že jsem se naučil nové věci. Nejhodnotnější mi připadají moje nové zkušenosti s jazykem Typst, jelikož se mi bude hodit na jakéholiv další práce. Myslím si, že finální produkt vizuálně vypadá celkem dobře a jsem s ním po vzhledové stránce spokojen.
+Tvorbu práce jsem si celkem užil a můžu říci, že jsem se naučil nové věci. Nejhodnotnější mi připadají moje nové zkušenosti s jazykem Typst, jelikož se mi bude hodit na jakékoliv další práce. Myslím si, že finální produkt vizuálně vypadá celkem dobře a jsem s ním po vzhledové stránce spokojen.
 
 #pagebreak()
 
