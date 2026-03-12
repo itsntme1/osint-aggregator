@@ -1,4 +1,5 @@
 #let proclamation-page = {
+  set page(footer: none)
 
   align(bottom)[
     Prohlašuji, že jsem maturitní práci vypracoval/a samostatně s využitím pouze uvedených
