@@ -98,7 +98,7 @@
 
 #pagebreak()
 = Úvod <unnumbered>
-Žijeme ve věku informací. Data o nás jsou sbírána a prodávána, ať už chceme nebo ne. Proto jsem se rozhodl vytvořit stránku/nástroj, který shromáždí některé z veřejně dostupných informací #footnote[V angličtině se používá pojem "OSINT"] o uživateli a podá mu je v přehledné formě. Práci jsem se rozhodl vypracovat v angličtině, jelikož ji všechny mé zdroje dat používají, a kdybych ji nepoužil, došlo by k nehezkému míchání.
+Žijeme ve věku informací. Data o nás jsou sbírána a prodávána, ať už chceme nebo ne. Proto jsem se rozhodl vytvořit stránku/nástroj, který shromáždí některé z veřejně dostupných informací #footnote[V angličtině se používá pojem "OSINT".] o uživateli a podá mu je v přehledné formě. Práci jsem se rozhodl vypracovat v angličtině, jelikož ji všechny mé zdroje dat používají, a kdybych ji nepoužil, došlo by k nehezkému míchání.
 
 #pagebreak()
 = Teoretická část
