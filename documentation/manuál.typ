@@ -103,10 +103,10 @@
 #pagebreak()
 = Teoretická část
 == Použité technologie
-Při vývoji aplikace jsem většinou vycházel z dokumentace jednotlivých technologií.
+Při vývoji aplikace jsem většinou vycházel z dokumentace jednotlivých technologií. Použil jsem pár ikon z web z webu "flaticon.com" @Flaticons a pár z ikonového fontu knihovny Bootstrap @BootstrapIcons.
 
 === Jazyky
-Základ mé aplikace tvoří Python, s pomocí kterého jsem napsal základní fungování stránky a zpracovávál jsem získaná data. JavaScript @JavaScriptDocs jsem využil k přidání reaktivity (tlačítka) a načitání zpracovaných dat. HTML @W3SchoolsHTML používám na strukturu stránky. Čisté CSS @W3SchoolsCSS používám pouze na malé úpravy a animace.
+Základ mé aplikace tvoří Python, s pomocí kterého jsem napsal základní fungování stránky a zpracovával jsem získaná data. JavaScript @JavaScriptDocs jsem využil k přidání reaktivity (tlačítka) a načitání zpracovaných dat. HTML @W3SchoolsHTML používám na strukturu stránky. Čisté CSS @W3SchoolsCSS používám pouze na malé úpravy a animace.
 
 #figure(
   table(
@@ -115,7 +115,7 @@ Základ mé aplikace tvoří Python, s pomocí kterého jsem napsal základní f
 
     [Python],[Základní fungování stránky a zpracování dat],
     [JavaScript],[Reaktivita uživatelské části aplikace a zobrazení dat],
-    [Typst],[Generovavání PDF shrnutí a získaných datech],
+    [Typst],[Generovavání PDF shrnutí a získaných dat],
     [HTML],[Základní struktura a obsah stránky],
     [CSS],[Pár vlastních stylů a animací]
   ),
@@ -130,7 +130,7 @@ Pro zjednodušení vývoje jsem využil několik populárních knihoven a framew
     columns: (auto, 1fr),
     table.header([Knihovna / Framework],[Použití]),
 
-    [Bootstrap],[Visuální prezentace stránky],
+    [Bootstrap],[Vizuální prezentace stránky],
     [Flask],[Základní fungování stránky a systém šablon],
     [Typst (Python modul) @TypstPython],[Načítání dat do dokumentu a jeho kompilace],
   ),
@@ -171,9 +171,10 @@ Mezi ostatní nástroje, které jsem použil patří Maigret @Maigret a Wget @Wg
 
 #pagebreak()
 = Praktická část
-Verze aplikace jsem spravoval přes nástroj Git a kód programu je k dispozici na stránce #link("https://github.com/itsntme1/osint-aggregator")[Github]. Pracoval jsem výhradně v editoru Vscode.
+Verze aplikace jsem spravoval přes nástroj Git a kód programu je k dispozici na stránce #link("https://github.com/itsntme1/osint-aggregator")[GitHub]. Pracoval jsem výhradně v editoru Vscode.
 
-== Přehled souborů
+== Přehled projektu
+=== Přehled souborů
 Zde je přehled důležitých souborů mého projektu. Z přehledu jsem vynechal soubory, které nejsou důležité pro fungování aplikace (například dočasné soubory, staré verze softwaru a soubory sloužící pro vybudování prostředí).
 
 #figure(
@@ -208,6 +209,17 @@ Zde je přehled důležitých souborů mého projektu. Z přehledu jsem vynechal
 
 Soubory s příponou `.py` jsou napsány v Pythonu. Přípona `.js` značí JavaScript. Přípony `.html` a `.css` značí sebe sama. Soubory končící na `.typ` obsahují typst a soubory bez koncovky jsou složkami.
 
+=== Přehled stránky
+#figure(
+  image("media/search.png"),
+  caption: "Screenshot vyhledávacího formuláře"
+)
+
+#figure(
+  image("media/dashboard.png"),
+  caption: "Screenshot karet"
+)
+
 == Implementace backendu
 Backend se nachází výhradně v souboru `app.py`. Spuštěním souboru pomocí Python interpreteru se spustí samotná aplikace. 
 
@@ -215,10 +227,10 @@ Backend se nachází výhradně v souboru `app.py`. Spuštěním souboru pomocí
 Stránka je spouštěna lokálně a není hostována na veřejném serveru. Když je spuštěna, běží na `localhost:5000`, kde si ji pomocí prohlížeče můžeme zobrazit.
 
 === Endpointy
-Stránka má dva endpointy #footnote()[Podadresa domény, kde je uživateli servírována stránka \ (například `ww.stranka.com/landing` nebo `www.stranka.com/dashboard`).] důležité pro uživatele `/`, který slouží pro vyhledávání a jako přistávací endpoint, a `/dashboard`, který slouží pro zobrazování dat. Dále má stránka 8 endpointů interních API, kde dochází k získávání a formátování dat.
+Stránka má dva endpointy #footnote[Podadresa domény, kde je uživateli servírována stránka \ (například `ww.stranka.com/landing` nebo `www.stranka.com/dashboard`).] důležité pro uživatele `/`, který slouží pro vyhledávání a jako přistávací endpoint, a `/dashboard`, který slouží pro zobrazování dat. Dále má stránka 8 endpointů interních API, kde dochází k získávání a formátování dat.
 
 === Zpracování API dotazů <api-request-handling>
-Nejdříve je požadavek spuštěn z frontendové části funkce funkcí, kde funkce `loadData()` spustí odpovídající cestu #footnote()[Pojem Flasku. V podstatě se jedná o to, co se stane, když je požádáno o endpoint stránky.], určenou argumentem `endpoint` v makru `card()`. Cesta požádá o data z externí API a přeformátuje je. Data jsou nakonec dosazena do schématu podle tabulky `schemaTable` a zobrazena uživateli.
+Nejdříve je požadavek spuštěn z frontendové části funkce funkcí, kde funkce `loadData()` spustí odpovídající cestu #footnote[Pojem Flasku. V podstatě se jedná o to, co se stane, když je požádáno o endpoint stránky.], určenou argumentem `endpoint` v makru `card()`. Cesta požádá o data z externí API a přeformátuje je. Data jsou nakonec dosazena do schématu podle tabulky `schemaTable` a zobrazena uživateli.
 
 #figure(
   [
@@ -268,7 +280,7 @@ Většinou do nich dodávám nějaký vyhledávací parametr.
   caption: [Funkce `query_xposedornot()`]
 )
 
-Občas k nim musím do hlavičky nebo jiné části adresy přidat také tajný API klíč #footnote()[Také se mu říká token.]. Klíče jsou uloženy v souboru `secret_keys.py`, který je ignorován nástrojem Git.
+Občas k nim musím do hlavičky nebo jiné části adresy přidat také tajný API klíč #footnote[Také se mu říká token.]. Klíče jsou uloženy v souboru `secret_keys.py`, který je ignorován nástrojem Git.
 
 #figure(
   [
@@ -490,7 +502,7 @@ Funkce `loadData()` se rozhodne podle `schemaTable`, kterou funkci má zavolat.
   caption: [Hašovací tabulka `schemaTable`]
 )
 
-Každá funkce vrátí HTML jako string a funkce `loadData()` ho dosadí na správné místo do karty. Funkce přijímají jako argument JSON #footnote()[JSON je zkratka pro "JavaScript Object Notation" a populární formát pro přenos dat mezi jazyky a službami.] data, které do stringu dosazují.
+Každá funkce vrátí HTML jako string a funkce `loadData()` ho dosadí na správné místo do karty. Funkce přijímají jako argument JSON #footnote[JSON je zkratka pro "JavaScript Object Notation" a populární formát pro přenos dat mezi jazyky a službami.] data, které do stringu dosazují.
 
 #figure(
   [
@@ -668,15 +680,15 @@ Dekorátor `@app.route()` přiřadí k cestě endpoint. Pro interní API `xposed
   caption: [Funkce `export_to_json()`]
 )
 
-Funkce uloží data do souboru typu JSON a pojmenuje ho podle uživatelkého hashe a názvu služby. Hash je vytvořen pomocí hashovací funkce, která jako argument bere uživatelovo jméno, přezdívky a emaily. Tato metoda vytvoří číslo unikátní pro argumenty funkce, což umožní pracovat s daty pro více uživatelů současně.
+Funkce uloží data do souboru typu JSON a pojmenuje ho podle uživatelského hashe a názvu služby. Hash je vytvořen pomocí hashovací funkce, která jako argument bere uživatelovo jméno, přezdívky a emaily. Tato metoda vytvoří číslo unikátní pro argumenty funkce, což umožní pracovat s daty pro více uživatelů současně.
 
 Existují také funkce `load_from_json()` a `load_report()`, které se starají o načítání dat z JSONu.
 
 === Wget
-Wget je použit pouze pro stažený statické mapy z "mapy.com".
+Wget je použit pouze pro stažení statické mapy z "mapy.com".
 
 === Maigret
-Nástroj Maigret slouží pro vyhledávání daných uživatelský jmen na známích službách. Je spoušten pomocí vestavěné pythonové funkce `subprocess.run()`, jehož výsledkem je vytvoření zprávy a její následné uložení do složky `reports`.
+Nástroj Maigret slouží pro vyhledávání daných uživatelský jmen na známých službách. Je spoušten pomocí vestavěné pythonové funkce `subprocess.run()`, jehož výsledkem je vytvoření zprávy a její následné uložení do složky `reports`.
 
 #figure(
   [
@@ -833,7 +845,7 @@ Můžeme také používat cykly.
 = Vyhodnocení
 Se svou prací nejsem spokojen. Kdybych měl tu možnost udělat ji znovu rozhodně bych systém načítání dat přes frontend tlačítko. Byl to špatný nápad. Všechny informace bych začal shánět a načítat hned po té co je uživatel zadá do formuláře a vše by bylo nezávislé na frontendu. Dále bych se pokusil změnit například HTML kód, který mám v javascript stringu.
 
-Celkově jsem spokojený s funkčností mojí práce, ale změnil bych provedení. Mohl bych přidat například zjišťování lokace uživatele nezávisle na ip adrese.
+Celkově jsem spokojený s funkčností mojí práce, ale změnil bych provedení. Mohl bych také přidat například zjišťování lokace uživatele nezávisle na ip adrese.
 
 #pagebreak()
 = Závěr <unnumbered>
