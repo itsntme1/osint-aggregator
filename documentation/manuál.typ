@@ -33,9 +33,11 @@
 #show heading: set text(font: "Calibri")
 #show heading.where(level: 1): set text(size: 24pt)
 #show heading.where(label: <unnumbered>): set heading(numbering: none)
+#show heading.where(level: 2): set heading(numbering: "1.1")
+#show heading.where(level: 3): set heading(numbering: "1.1")
+
 #set heading(
-  // Suspicious
-  numbering: "1.1"
+  numbering: "1."
 )
 
 // Text
@@ -76,6 +78,7 @@
 
 // Tables
 #show table.cell.where(y: 0): strong
+
 #set table(
   stroke: 0.8pt + black,
   align: (x, y) =>
@@ -85,6 +88,11 @@
 
 // Raw
 #show raw: set text(font: "JetBrainsMono NF")
+
+// Other
+#show regex("\b(a|i|k|s|v|z|o|u|na|do|od|po|že|se|si) "): it => {
+  it.text.replace(" ", "\u{00A0}")
+}
 
 // CONTENT
 
@@ -389,7 +397,7 @@ V dětské šabloně můžeme použít funkci `super()`, která do ní doplní o
   caption: [Implementace makra pro karty]
 )
 
-Dále používám makra, která bych popsal jako funkce pro HTML. Funkci můžeme dát proměnné, které budou doplněny přímo do kódu. Funkce můžeme v jiném templatu, když je importujeme (například takto `{% from 'macros.html' import card %}`).
+Dále používám makra, která bych popsal jako funkce pro HTML. Funkci můžeme dát proměnné, které budou doplněny přímo do kódu. Funkce můžeme v jiném templatu, když je importujeme (například takto \ `{% from 'macros.html' import card %}`).
 
 #figure(
   [
@@ -463,11 +471,11 @@ Nejdůležitější funkce pro načítání dat je funkce `loadData()` v souboru
   caption: [Funkce `loadData()`]
 )
 
-Funkce bere `element`, kterým je plocha pro obsah karty. Podívá se na svoje rodičovské prvky a načte z nich proměnné data-endpoint a data-schema (V HTML můžeme deklarovat vlastní atributy s pomocí předpony `data-`, což já s pomocí systému Jinja a maker využívám jako proměnné). Zavolá funkci `fetch()` s proměnnou endpoint jako parametrem a výsledek přiřadí do proměnné data. Podívá se na mapu `schemaTable` a do HTML prvku vloží správný obsah podle schématu a dat získaných z endpointu.
+Funkce bere `element`, kterým je plocha pro obsah karty. Podívá se na svoje rodičovské prvky a načte z nich proměnné data-endpoint a data-schema (V HTML můžeme deklarovat vlastní atributy s pomocí předpony `data-`, což já s pomocí systému Jinja a~maker využívám jako proměnné). Zavolá funkci `fetch()` s proměnnou endpoint jako parametrem a výsledek přiřadí do proměnné data. Podívá se na mapu `schemaTable` a do HTML prvku vloží správný obsah podle schématu a dat získaných z endpointu.
 
 Pokud se v průběhu funkce stane chyba, do HTML prvku je vloženo schéma pro chybu.
 
-Ve funkci se vyskytují klíčová slova `await`, která ve spojení s `async` před funkcí způsobí, že program na daném řádku počká na výsledek, než bude postupovat dál."
+Ve funkci se vyskytují klíčová slova `await`, která ve spojení s `async` před funkcí způsobí, že program na daném řádku počká na výsledek, než bude postupovat dál.
 
 V souboru `static/script.js` jsou další funkce, které fungují okolo `loadData()`:
 
