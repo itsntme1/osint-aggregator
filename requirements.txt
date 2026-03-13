@@ -39,7 +39,7 @@ jedi==0.19.2
 Jinja2==3.1.6
 jsonpickle==4.1.1
 lxml==6.0.2
-maigret @ file:///home/itisntme1/Documents/coding/projects/osint-aggregator/maigret
+maigret @ file:./maigret
 MarkupSafe==3.0.3
 matplotlib-inline==0.2.1
 mock==5.2.0
@@ -88,12 +88,14 @@ tokenize_rt==6.2.0
 torrequest==0.1.0
 traitlets==5.14.3
 typing_extensions==4.15.0
+typst==0.14.7
 tzlocal==5.3.1
 uritools==6.0.1
 urllib3==2.6.3
 wcwidth==0.5.0
 webencodings==0.5.1
 Werkzeug==3.1.5
+wget==3.2
 xhtml2pdf==0.2.17
 XMind==1.2.0
 yarl==1.22.0
