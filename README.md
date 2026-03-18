@@ -1,4 +1,4 @@
-# Jak nainstalovat projekt
+## Jak nainstalovat projekt
 
 1. Nainstalovat Python
 2. V termiálu (cmd, Powershell, bash, ...) se přemístit do kořenu projektu
