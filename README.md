@@ -1,7 +1,15 @@
 ## Jak nainstalovat projekt
 
-1. Nainstalovat Python
-2. V termiálu (cmd, Powershell, bash, ...) se přemístit do kořenu projektu
-3. Sputit příkaz `pip install -r requirements.txt`
-4. Spustit aplikaci pomocí `python app.py`
-5. Ve webovém prohlížeči jít na adresu [http://127.0.0.1:5000](http://127.0.0.1:5000)
+### Ručně
+1. Nainstalujte Python
+2. V termiálu (cmd, Powershell, bash, ...) se přesuňte do kořenu projektu 
+3. Vytvořte virtuální prostředí pomocí: `python -m venv .venv`
+4. Aktivujte prostředí pomocí: \
+    Linux: `source .venv/bin/activate` \
+    Windows: `.venv\Scripts\activate`
+5. Spusťte příkaz: `pip install -r requirements.txt`
+6. Spusťte aplikaci pomocí: `python app.py`
+7. Ve webovém prohlížeči přejděte na adresu: [http://127.0.0.1:5000](http://127.0.0.1:5000)
+
+### Pomocí instalačního programu (Windows)
+1. Spusťte soubor: `install.bat`
