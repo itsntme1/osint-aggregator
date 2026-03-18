@@ -3,7 +3,7 @@
 ### Ručně
 1. Nainstalujte Python
 2. V termiálu (cmd, Powershell, bash, ...) se přesuňte do kořenu projektu 
-3. Vytvořte virtuální prostředí pomocí: `python -m venv .venv`
+3. Vytvořte virtuální prostředí pomocí: `python3 -m venv .venv`
 4. Aktivujte prostředí pomocí: \
     Linux: `source .venv/bin/activate` \
     Windows: `.venv\Scripts\activate`
@@ -13,3 +13,4 @@
 
 ### Pomocí instalačního programu (Windows)
 1. Spusťte soubor: `install.bat`
+2. Počkejte minutu, aby v pozadí vše naistalovalo
